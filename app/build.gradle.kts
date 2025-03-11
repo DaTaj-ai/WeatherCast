@@ -59,6 +59,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // lifeCycle
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7")
     // retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     // gson converter
@@ -68,17 +70,24 @@ dependencies {
 
     implementation ("com.google.code.gson:gson:2.10.1")
 
+    // Glide
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.github.bumptech.glide:compose:1.0.0-beta01")
     // Room
     implementation ("androidx.room:room-ktx:2.6.1")
     implementation ("androidx.room:room-runtime:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
+
+    // Navigation
     val nav_version =
         "2.8.8"
     implementation("androidx.navigation:navigation-compose:$nav_version")
-//Serialization for NavArgs
+    //Serialization for NavArgs
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+
+    //LiveData & Compose
+    val compose_version = "1.0.0"
+    implementation("androidx.compose.runtime:runtime-livedata:$compose_version")
 
 
 }
