@@ -72,7 +72,7 @@ fun BottomNavigationBar(
     AnimatedNavigationBar(
         modifier = Modifier.height(64.dp),
         selectedIndex = selectedIndex,
-        cornerRadius = shapeCornerRadius(cornerRadius = 34.dp),
+        cornerRadius = shapeCornerRadius(cornerRadius = 64.dp),
         ballAnimation = Parabolic(tween(300)),
         indentAnimation = Height(tween(300)),
         barColor = MaterialTheme.colorScheme.background,
@@ -82,15 +82,16 @@ fun BottomNavigationBar(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .noRippleClickable { onItemClick(item.ordinal) },
+                    .noRippleClickable { onItemClick(item.ordinal)
+                        navController.navigate(item.route)
+                                       }
+                    ,
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     modifier = Modifier
                         .size(26.dp)
-                        .clickable {
-                            navController.navigate(item.route)
-                        },
+                        ,
                     imageVector = item.icon,
                     contentDescription = "Bottom bar icon",
                     tint = if (selectedIndex == item.ordinal) {

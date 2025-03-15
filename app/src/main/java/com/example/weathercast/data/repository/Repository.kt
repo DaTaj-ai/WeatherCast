@@ -3,6 +3,7 @@ package com.example.weathercast.data.repository
 import android.util.Log
 import com.example.mvvm_lab3.data.localDataSource.LocalDataSource
 import com.example.mvvm_lab3.data.reomteDataSource.RemoteDataSource
+import com.example.weathercast.data.models.ForecastModel
 
 class Repository private constructor(
     private val remoteDataSource: RemoteDataSource,
@@ -15,24 +16,17 @@ class Repository private constructor(
             return instance ?: Repository(remote, local).also { instance = it }
         }
     }
-//    companion object {
-//        @Volatile
-//        private var instance: Repository? = null
-//        fun getInstance(
-//            remoteDataSource: RemoteDataSource,
-//            /*localDataSource: LocalDataSource*/
-//        ): Repository {
-//            return instance ?: synchronized(this) {
-//                instance ?: Repository(remoteDataSource).also { instance = it }
-//            }
-//        }
-//    }
-
 
     suspend fun getWeather(lat: Double, lon: Double) {
         val weather = remoteDataSource.getWeather(lat, lon)
 
-        Log.i("TAG", "getWeather:${weather.toString()} from repository + ")
+        Log.i("TAG", "getWeather:${weather?.weather}${weather?.id} from repository + ")
+    }
+
+    suspend fun getForecast(lat: Double, lon: Double): ForecastModel? {
+        val forecast = remoteDataSource.getForecast(lat, lon)
+        Log.i("TAG", "getForecast: ${forecast.toString()}")
+        return forecast
     }
 
 }

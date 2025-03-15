@@ -10,7 +10,9 @@ class HomeScreenViewModel(private val repo: Repository) : ViewModel() {
     suspend fun getWeather(lat: Double, lon: Double) {
         repo.getWeather(lat, lon)
     }
-
+    suspend fun getForecast(lat: Double, lon: Double) {
+        repo.getForecast(lat, lon)
+    }
 }
 
 class HomeScreenViewModelFactory(private val repo: Repository) : ViewModelProvider.Factory {

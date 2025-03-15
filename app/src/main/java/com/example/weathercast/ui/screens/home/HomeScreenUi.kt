@@ -1,5 +1,6 @@
 package com.example.weathercast.ui.screens.home
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -35,16 +37,31 @@ import com.example.weathercast.ui.theme.ColorGradient3
 import com.example.weathercast.ui.theme.ColorTextSecondary
 import com.example.weathercast.ui.theme.ColorTextSecondaryVariant
 import com.example.weathercast.ui.theme.ColorWindForecast
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
+
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
+
     Column {
-//        DailyForecast()
-//        AirQuality()
-//        WeeklyForecast()
+        LaunchedEffect(Unit) {
+            // Call your suspend function here
+         try{
+
+            homeScreenViewModel.getWeather(44.34, 10.99)
+
+             homeScreenViewModel.getForecast(44.34, 10.99)
+         }
+         catch (e:Exception){
+             Log.i("TAG", "HomeScreen:+ ${e.message} ")
+         }
+        }
+
+        DailyForecast()
+        AirQuality()
+        WeeklyForecast()
     }
+
 }
 
 
