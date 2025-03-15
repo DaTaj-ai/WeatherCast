@@ -1,5 +1,6 @@
 package com.example.weathercast.ui.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -27,12 +28,25 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.example.weathercast.R
+import com.example.weathercast.ui.screens.home.components.AirQuality
 import com.example.weathercast.ui.theme.ColorGradient1
 import com.example.weathercast.ui.theme.ColorGradient2
 import com.example.weathercast.ui.theme.ColorGradient3
 import com.example.weathercast.ui.theme.ColorTextSecondary
 import com.example.weathercast.ui.theme.ColorTextSecondaryVariant
 import com.example.weathercast.ui.theme.ColorWindForecast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+@Composable
+fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
+    Column {
+//        DailyForecast()
+//        AirQuality()
+//        WeeklyForecast()
+    }
+}
+
 
 @Composable
 fun DailyForecast(

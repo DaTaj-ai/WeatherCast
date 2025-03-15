@@ -144,14 +144,6 @@ fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
 }
 
 
-@Composable
-fun HomeScreen(email: String) {
-    Column {
-        DailyForecast()
-        AirQuality()
-        WeeklyForecast()
-    }
-}
 
 
 

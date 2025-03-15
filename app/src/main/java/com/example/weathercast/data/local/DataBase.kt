@@ -7,19 +7,18 @@ import androidx.room.RoomDatabase
 import com.example.lab4workmanager.models.Product
 
 @Database(entities = arrayOf(Product::class), version = 1 )
-abstract class ProductDataBase : RoomDatabase() {
-    abstract fun getProductDao(): ProductDao
+abstract class WeatherDataBase : RoomDatabase() {
+    abstract fun getProductDao(): WeatherDao
 
     companion object{
         @Volatile
-        private var INSTANCE: ProductDataBase? = null
-        fun getInstance (ctx: Context): ProductDataBase{
+        private var INSTANCE: WeatherDataBase? = null
+        fun getInstance (ctx: Context): WeatherDataBase{
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    ctx.applicationContext, ProductDataBase::class.java, "color_database")
+                    ctx.applicationContext, WeatherDataBase::class.java, "Weather_database")
                     .build()
                 INSTANCE = instance
-// return instance
                 instance }
         }
     }

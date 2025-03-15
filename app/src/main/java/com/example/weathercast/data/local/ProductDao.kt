@@ -9,15 +9,15 @@ import androidx.room.Upsert
 import com.example.lab4workmanager.models.Product
 
 @Dao
-interface ProductDao {
+interface   WeatherDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertProduct(product: Product):Long
-
-    @Delete()
-    suspend fun deleteProduct(product: Product):Int
-
-    @Query("SELECT * FROM products")
-    suspend fun getAllProducts(): List<Product>
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun insertProduct(product: Product):Long
+//
+//    @Delete()
+//    suspend fun deleteProduct(product: Product):Int
+//
+//    @Query("SELECT * FROM products")
+//    suspend fun getAllProducts(): List<Product>
 
 }
