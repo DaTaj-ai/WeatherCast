@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
-import com.example.lab4workmanager.models.Product
 
 @Dao
 interface   WeatherDao {

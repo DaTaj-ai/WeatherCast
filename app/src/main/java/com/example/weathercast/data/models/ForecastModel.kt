@@ -1,9 +1,17 @@
 package com.example.weathercast.data.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+
+@Entity(tableName = "forecast")
+
 data class ForecastModel(
-    val city: City,
-    val cnt: Int,
-    val cod: String,
-    val list: List<Item0>,
-    val message: Int
+    @PrimaryKey(autoGenerate = true)
+    var id:Int ,
+    var city: City,
+    var cnt: Int,
+    var cod: String,
+    var list: List<Item0>,
+    var message: Int
 )

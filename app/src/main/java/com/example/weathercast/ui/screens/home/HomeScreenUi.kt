@@ -47,7 +47,6 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
         LaunchedEffect(Unit) {
             // Call your suspend function here
          try{
-
             homeScreenViewModel.getWeather(44.34, 10.99)
 
              homeScreenViewModel.getForecast(44.34, 10.99)

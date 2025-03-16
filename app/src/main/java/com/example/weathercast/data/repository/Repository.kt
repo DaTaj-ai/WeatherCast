@@ -20,13 +20,19 @@ class Repository private constructor(
     suspend fun getWeather(lat: Double, lon: Double) {
         val weather = remoteDataSource.getWeather(lat, lon)
 
-        Log.i("TAG", "getWeather:${weather?.weather}${weather?.id} from repository + ")
+        Log.i("TAG", " we are here ${weather?.weather.toString()}${weather?.id} from repository + ")
     }
 
     suspend fun getForecast(lat: Double, lon: Double): ForecastModel? {
         val forecast = remoteDataSource.getForecast(lat, lon)
-        Log.i("TAG", "getForecast: ${forecast.toString()}")
-        return forecast
+        Log.i("TAG", "Forecast data  ")
+        Log.i("TAG", "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        for(i in forecast?.body()?.list!!){
+            Log.i("TAG", "getForecast: ${i.weather[0].description}")
+            Log.i("TAG", "getForecast: ${i.weather.toString()}")
+        }
+        Log.i("TAG", "getForecast  : ${forecast?.body()?.list}")
+        Log.i("TAG", "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        return forecast?.body()
     }
-
 }
