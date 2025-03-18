@@ -35,9 +35,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.weathercast.navigation.NavSetup
 import com.example.weathercast.navigation.ScreenRoute
-import com.example.weathercast.ui.screens.home.DailyForecast
-import com.example.weathercast.ui.screens.home.WeeklyForecast
-import com.example.weathercast.ui.screens.home.components.AirQuality
+import com.example.weathercast.ui.screens.home.ActionBar
+
 import com.example.weathercast.ui.theme.WeatherCastTheme
 import com.exyte.animatednavbar.AnimatedNavigationBar
 import com.exyte.animatednavbar.animation.balltrajectory.Parabolic

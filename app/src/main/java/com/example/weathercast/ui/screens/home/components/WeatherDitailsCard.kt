@@ -25,7 +25,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weathercast.R
-import com.example.weathercast.ui.screens.home.AirQualityData
+import com.example.weathercast.data.models.WeatherModel
+//import com.example.weathercast.ui.screens.home.AirQualityData
 import com.example.weathercast.ui.screens.home.AirQualityItem
 import com.example.weathercast.ui.theme.ColorAirQualityIconTitle
 import com.example.weathercast.ui.theme.ColorSurface
@@ -36,9 +37,8 @@ import com.example.weathercast.ui.theme.ColorTextPrimaryVariant
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AirQuality(
-    modifier: Modifier = Modifier,
-    data: List<AirQualityItem> = AirQualityData
-) {
+    modifier: Modifier = Modifier
+    ,weather: WeatherModel?) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(32.dp),
@@ -59,6 +59,25 @@ fun AirQuality(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                var data: List<AirQualityItem> = listOf(
+                AirQualityItem(
+                    title = "Pressure",
+                    value = weather!!.main.pressure.toString(),
+                    icon = R.drawable.cloud_day_forecast_rain_rainy_icon
+                ) ,AirQualityItem(
+                title = "Humidity",
+                value =  weather!!.main.humidity.toString() ,
+                icon = R.drawable.cloud_day_forecast_rain_rainy_icon
+                ),AirQualityItem(
+                title = "Wind speed",
+                value = weather!!.wind.speed.toString(),
+                icon = R.drawable.cloud_day_forecast_rain_rainy_icon
+                ),AirQualityItem(
+                title = "clouds",
+                value = weather!!.clouds.all.toString(),
+                icon = R.drawable.cloud_day_forecast_rain_rainy_icon
+                )
+                )
                 data.onEach { item ->
                     AirQualityInfo(
                         data = item,
