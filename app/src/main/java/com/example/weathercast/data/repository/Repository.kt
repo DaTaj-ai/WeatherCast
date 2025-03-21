@@ -20,15 +20,15 @@ class Repository private constructor(
         }
     }
 
-    fun getWeather(lat: Double, lon: Double): Flow<WeatherModel?> {
+    fun getWeather(lat: Double, lon: Double , lang: String  , unit: String): Flow<WeatherModel?> {
         return flow {
-            emit(remoteDataSource.getWeather(lat, lon))
+            emit(remoteDataSource.getWeather(lat, lon , lang = lang , unit=  unit))
         }
     }
 
-    fun getForecast(lat: Double, lon: Double): Flow<ForecastModel?> {
+    fun getForecast(lat: Double, lon: Double, lang: String , unit: String): Flow<ForecastModel?> {
         return flow {
-            emit(remoteDataSource.getForecast(lat, lon)?.body())
+            emit(remoteDataSource.getForecast(lat, lon ,lang , unit )?.body())
         }
     }
 

@@ -89,9 +89,9 @@ fun DailyForecast(
                     topMargin = 24.dp
                 )
                 height = Dimension.fillToConstraints
+
             }
         )
-
         Image(
             painter = painterResource(R.drawable.cloud_day_forecast_rain_rainy_icon),
             contentDescription = null,
@@ -127,8 +127,10 @@ fun DailyForecast(
                 .padding(bottom = 24.dp)
         )
 
+
         ForecastValue(
             modifier = Modifier.constrainAs(forecastValue) {
+                Log.i("desc", "DailyForecast: ${weather?.weather?.get(0)?.description.toString()} ")
                 end.linkTo(anchor = parent.end, margin = 24.dp)
                 top.linkTo(forecastImage.top)
                 bottom.linkTo(forecastImage.bottom)

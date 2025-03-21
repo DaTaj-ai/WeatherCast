@@ -34,7 +34,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.weathercast.R
-import com.example.weathercast.ui.screens.home.components.ForecastData
 import com.example.weathercast.ui.screens.home.components.ForecastItem
 import com.example.weathercast.ui.theme.ColorGradient1
 import com.example.weathercast.ui.theme.ColorGradient2
@@ -48,7 +47,7 @@ import com.example.weathercast.ui.theme.ColorTextSecondaryVariant
 @Composable
 fun WeeklyForecast(
     modifier: Modifier = Modifier,
-    data: List<ForecastItem> = ForecastData
+    data: List<ForecastItem>
 ) {
     Column(
         modifier = modifier,
@@ -186,9 +185,9 @@ private fun Forecast(
         Spacer(
             modifier = Modifier.height(8.dp)
         )
-        WeatherImage(
+  /*      WeatherImage(
             image = item.image
-        )
+        )*/
         Spacer(
             modifier = Modifier.height(6.dp)
         )
@@ -255,5 +254,17 @@ private fun AirQualityIndicator(
 
 
 
-fun Color.Companion.fromHex(colorString: String) =
-    Color(android.graphics.Color.parseColor(colorString))
+fun Color.Companion.fromHex(colorString: String): Color {
+    return try {
+        // Check if the color string starts with '#' and has a valid format
+        if (colorString.startsWith("#") && (colorString.length == 7 || colorString.length == 9)) {
+            Color(android.graphics.Color.parseColor(colorString))
+        } else {
+            // Return a default color if the string is invalid
+            Color(android.graphics.Color.parseColor("#FFFFFF")) // Default to white
+        }
+    } catch (e: IllegalArgumentException) {
+        // Handle invalid color format by returning a default color
+        Color(android.graphics.Color.parseColor("#FFFFFF")) // Default to white
+    }
+}

@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.constraintlayout)
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation(libs.protolite.well.known.types)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -104,5 +105,16 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended-android:1.7.5")
 
     implementation("com.exyte:animated-navigation-bar:1.0.0")
+
+    // google maps
+    implementation("com.google.maps.android:maps-compose:6.5.2")
+
+    // Optionally, you can include the Compose utils library for Clustering,
+    // Street View metadata checks, etc.
+    implementation("com.google.maps.android:maps-compose-utils:6.5.2")
+
+    // Optionally, you can include the widgets library for ScaleBar, etc.
+    implementation("com.google.maps.android:maps-compose-widgets:6.5.2")
+
 
 }

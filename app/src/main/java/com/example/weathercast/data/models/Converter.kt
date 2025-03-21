@@ -21,13 +21,13 @@ class Converters {
 
     // Converter for List<Item0>
     @TypeConverter
-    fun fromItemList(list: List<Item0>): String {
+    fun fromItemList(list: List<ForecastEntry>): String {
         return gson.toJson(list)
     }
 
     @TypeConverter
-    fun toItemList(listJson: String): List<Item0> {
-        val type = object : TypeToken<List<Item0>>() {}.type
+    fun toItemList(listJson: String): List<ForecastEntry> {
+        val type = object : TypeToken<List<ForecastEntry>>() {}.type
         return gson.fromJson(listJson, type)
     }
 }
