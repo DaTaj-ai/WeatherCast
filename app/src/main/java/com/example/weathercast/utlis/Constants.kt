@@ -12,6 +12,8 @@ class Constants {
         val FAHRENHEIT_PARM = "imperial"
         val CELSIUS_PARM = "metric"
         val KELVIN_PARM = ""
+        val USER_LONG = "USER_LOCAL_LONGITUDE"
+        val USER_LAT = "USER_LOCAL_LATITUDE"
     }
 }
 

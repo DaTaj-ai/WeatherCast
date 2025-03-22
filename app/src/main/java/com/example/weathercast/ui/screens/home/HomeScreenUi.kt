@@ -2,6 +2,8 @@ package com.example.weathercast.ui.screens.home
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -20,6 +22,8 @@ import com.example.weathercast.ui.screens.home.components.AirQuality
 import com.example.weathercast.ui.screens.home.components.DailyForecast
 import com.example.weathercast.utlis.Constants
 import com.example.weathercast.utlis.Response
+import java.io.IOException
+import java.util.Locale
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -39,15 +43,17 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
             val location = sp.getString(Constants.LOCATION, "GPS")
             val windSpeedUnit = sp.getString(Constants.WIND_SPEED_UNIT, "m/s")
             val tempUnit = sp.getString(Constants.TEMPERATURE_UNIT, Constants.CELSIUS_PARM)
+            val lat = sp.getString(Constants.USER_LAT, "0.0")?.toDouble()?:2.54
+            val long = sp.getString(Constants.USER_LONG, "0.0")?.toDouble()?:2.54
 
             Log.i("SP", "Shared prefrance what : ${language}  ")
             Log.i("SP", "Shared prefrance what : ${location}  ")
             Log.i("SP", "Shared prefrance what : ${windSpeedUnit}  ")
-            Log.i("SP", "Shared prefrance what : ${tempUnit} ")
+            Log.i("SP", "Shared prefrance what tteemmp  : ${tempUnit} ")
 
-            homeScreenViewModel.getWeather(20.22, 88.22, "ar", Constants.CELSIUS_PARM)
-
-            homeScreenViewModel.getForecast(20.22, 65.22, "ar", Constants.CELSIUS_PARM)
+            homeScreenViewModel.getWeather(lat, long,language?:Constants.Emglish_PARM, tempUnit?:Constants.CELSIUS_PARM)
+            homeScreenViewModel.getForecast(lat, long,  language?:Constants.Emglish_PARM, tempUnit?:Constants.CELSIUS_PARM)
+            homeScreenViewModel.getLocationName(context)
 
         } catch (e: Exception) {
             Log.i("TAG", "HomeScreen:+ ${e.message} ")
@@ -63,7 +69,7 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
 
             is Response.Success -> {
                 var weather = (weather as Response.Success).data as WeatherModel
-                ActionBar(location = weather.name)
+                Header(location = weather.name)
                 DailyForecast(weather = (weather))
                 AirQuality(weather = (weather))
             }
@@ -100,6 +106,7 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
         }
 
     }
+
 
 }
 
