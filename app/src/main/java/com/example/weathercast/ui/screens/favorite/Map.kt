@@ -13,7 +13,9 @@ import com.google.maps.android.compose.rememberMarkerState
 
 @Preview
 @Composable
-private fun GoogleMap() {
+ fun ShowGoogleMap() {
+
+
     val singapore = LatLng(1.35, 103.87)
     val singaporeMarkerState = rememberMarkerState(position = singapore)
     val cameraPositionState = rememberCameraPositionState {
@@ -30,3 +32,4 @@ private fun GoogleMap() {
         )
     }
 }
+

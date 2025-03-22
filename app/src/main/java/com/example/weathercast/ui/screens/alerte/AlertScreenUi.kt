@@ -79,7 +79,8 @@ fun AlertScreenMain() {
 }
 
 
-private fun setAlarm(context: Context , time : Long  ) {
+@SuppressLint("ScheduleExactAlarm")
+private fun setAlarm(context: Context, time : Long  ) {
     //val timeSec = System.currentTimeMillis() + 10000
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, MyAlarm::class.java)
