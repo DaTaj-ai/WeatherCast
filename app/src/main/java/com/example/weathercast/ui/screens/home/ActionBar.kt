@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.weathercast.ui.theme.ColorGradient1
 import com.example.weathercast.ui.theme.ColorGradient2
@@ -41,7 +40,7 @@ import com.example.weathercast.ui.theme.ColorTextSecondary
 
 @Composable
 fun Header(
-    modifier: Modifier = Modifier , location: String
+    modifier: Modifier = Modifier, location: String , dateString: String = "Today"
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -49,8 +48,8 @@ fun Header(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         LocationInfo(
-            modifier = Modifier.padding(top = 10.dp),
-            location = location
+            modifier = Modifier.padding(top = 16.dp, start = 16.dp),
+            location = location , dateString
         )
 
     }
@@ -60,23 +59,31 @@ fun Header(
 @Composable
 private fun LocationInfo(
     modifier: Modifier = Modifier,
-    location: String
+    location: String, dateString: String
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            androidx.compose.material3.Icon(Icons.Filled.LocationOn, contentDescription = "")
+            Row {
+                androidx.compose.material3.Icon(Icons.Filled.LocationOn, contentDescription = "")
+                Text(
+                    text = location,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color(0, 0, 0),
+                    fontWeight = FontWeight.Bold,
+                )
+            }
             Text(
-                text = location,
-                style = MaterialTheme.typography.titleLarge,
-                color = Color(0,0,0),
-                fontWeight = FontWeight.Bold,
+                text = dateString ,
+                style = MaterialTheme.typography.labelSmall,
+                color = Color(0, 0, 0),
+                fontWeight = FontWeight.Bold
             )
         }
     }

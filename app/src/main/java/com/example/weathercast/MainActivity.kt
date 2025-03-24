@@ -15,13 +15,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Favorite
@@ -39,8 +42,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
@@ -51,6 +54,8 @@ import com.example.weathercast.ui.theme.WeatherCastTheme
 import com.example.weathercast.utlis.Constants
 import com.exyte.animatednavbar.AnimatedNavigationBar
 import com.exyte.animatednavbar.animation.balltrajectory.Parabolic
+import com.exyte.animatednavbar.animation.balltrajectory.Straight
+import com.exyte.animatednavbar.animation.balltrajectory.Teleport
 import com.exyte.animatednavbar.animation.indendshape.Height
 import com.exyte.animatednavbar.animation.indendshape.shapeCornerRadius
 import com.exyte.animatednavbar.utils.noRippleClickable
@@ -126,7 +131,10 @@ class MainActivity : ComponentActivity() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
                 for (location in locationResult.locations) {
-                    Log.i("Location", "yes we are here :  ${location.latitude}  ${location.longitude}")
+                    Log.i(
+                        "Location",
+                        "yes we are here :  ${location.latitude}  ${location.longitude}"
+                    )
                     var sp = getSharedPreferences(Constants.SETTINGS, MODE_PRIVATE)
                     sp.edit().putString(Constants.USER_LAT, location.latitude.toString()).commit()
                     sp.edit().putString(Constants.USER_LONG, location.longitude.toString()).commit()
@@ -174,18 +182,23 @@ fun BottomNavigationBar(
     navigationBarItems: List<NavigationBarItem>, navController: NavHostController
 ) {
     AnimatedNavigationBar(
-        modifier = Modifier.height(64.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, end = 8.dp, top = 0.dp, bottom = 16.dp),
         selectedIndex = selectedIndex,
-        cornerRadius = shapeCornerRadius(cornerRadius = 64.dp),
-        ballAnimation = Parabolic(tween(300)),
-        indentAnimation = Height(tween(300)),
+        cornerRadius = shapeCornerRadius(cornerRadius = 16.dp),
+        ballAnimation = Straight(tween(250)),
+        indentAnimation = Height(tween(1)),
         barColor = MaterialTheme.colorScheme.background,
-        ballColor = MaterialTheme.colorScheme.primary
-    ) {
+        ballColor = MaterialTheme.colorScheme.primary,
+
+        ) {
         navigationBarItems.forEach { item ->
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .width(64.dp)
+                    .height(60.dp)
                     .noRippleClickable {
                         onItemClick(item.ordinal)
                         navController.navigate(item.route)
@@ -194,7 +207,7 @@ fun BottomNavigationBar(
             ) {
                 Icon(
                     modifier = Modifier
-                        .size(26.dp),
+                        .size(30.dp),
                     imageVector = item.icon,
                     contentDescription = "Bottom bar icon",
                     tint = if (selectedIndex == item.ordinal) {
@@ -218,7 +231,10 @@ fun MainContent(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             bottomBar = {
-                BottomAppBar {
+                BottomAppBar(
+                    modifier = Modifier.background(Color.Transparent), // Make BottomAppBar transparent
+                    containerColor = Color.Transparent
+                ) {
                     BottomNavigationBar(
                         selectedIndex = selectedIndex,
                         onItemClick = onItemClick,

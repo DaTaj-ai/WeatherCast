@@ -52,30 +52,10 @@ fun DailyForecast(
         // date
         Log.i("TAG", "DailyForecast: ${getDate(weather!!.dt)}")
 
-        // Humidity
-        Log.i("TAG", "DailyForecast: ${weather!!.main.humidity}")
-
-        // Wind speed
-        Log.i("TAG", "DailyForecast: ${weather!!.wind.speed}")
-
-        // pressure
-        Log.i("TAG", "DailyForecast: ${weather!!.main.pressure}")
-
-        // clouds
-        Log.i("TAG", "DailyForecast: ${weather!!.clouds.all}")
-
-        //city
-        Log.i("TAG", "DailyForecast: ${weather!!.name}")
-
-        //Description
-        Log.i("TAG", "DailyForecast: ${weather!!.weather.get(0).description}")
-
-        // current  Hour and Minute
         val currentTime = LocalTime.now()
         val hours = currentTime.hour
         val minutes = currentTime.minute
         println("Current time: $hours:$minutes")
-
 
         val (forecastImage, forecastValue, windImage, title, description, background) = createRefs()
 
@@ -186,7 +166,6 @@ private fun ForecastValue(
                 style = TextStyle(
                     brush = Brush.verticalGradient(
                         0f to Color.White,
-                        1f to Color.White.copy(alpha = 0.3f)
                     ),
                     fontSize = 80.sp,
                     fontWeight = FontWeight.Black
@@ -198,7 +177,6 @@ private fun ForecastValue(
                 style = TextStyle(
                     brush = Brush.verticalGradient(
                         0f to Color.White,
-                        1f to Color.White.copy(alpha = 0.3f)
                     ),
                     fontSize = 70.sp,
                     fontWeight = FontWeight.Light,

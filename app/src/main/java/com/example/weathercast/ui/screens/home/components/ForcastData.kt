@@ -4,12 +4,11 @@ import androidx.annotation.DrawableRes
 import com.example.weathercast.R
 
 data class ForecastItem(
-    /*@DrawableRes val image: Int,*/
     val dayOfWeek: String,
     val date: String,
     val temperature: String,
-    val airQuality: String,
-    val airQualityIndicatorColorHex: String = "#2dbe8d",
+    val description: String,
+    val icon: String,
     val isSelected: Boolean = false
 )
 

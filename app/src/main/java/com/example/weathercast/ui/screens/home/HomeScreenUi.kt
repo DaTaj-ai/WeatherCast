@@ -8,16 +8,21 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.weathercast.data.models.ForecastModel
 import com.example.weathercast.data.models.WeatherModel
 import com.example.weathercast.data.models.dailyForecasts
 import com.example.weathercast.data.models.getTodayForecast
+import com.example.weathercast.ui.screens.V2home.RealHomeScreen
+import com.example.weathercast.ui.screens.V2home.WeeklyForecastCard
 import com.example.weathercast.ui.screens.home.components.AirQuality
 import com.example.weathercast.ui.screens.home.components.DailyForecast
 import com.example.weathercast.utlis.Constants
@@ -60,7 +65,9 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
         }
     }
 
-    Column {
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+
+
         when (weather) {
             is Response.Loading -> {
                 // call Loading Logic
@@ -69,9 +76,11 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
 
             is Response.Success -> {
                 var weather = (weather as Response.Success).data as WeatherModel
-                Header(location = weather.name)
-                DailyForecast(weather = (weather))
-                AirQuality(weather = (weather))
+                RealHomeScreen(weather)
+
+//                Header(location = weather.name)
+//                DailyForecast(weather = (weather))
+//                AirQuality(weather = (weather))
             }
 
             is Response.Error -> {
@@ -94,8 +103,9 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
                 TodayForecast(forecastLocal.getTodayForecast())
 
                 var value = forecastLocal.dailyForecasts()
-
-                WeeklyForecast(data = value)
+                WeeklyForecastCard(value)
+//
+//                WeeklyForecast(data = value)
             }
 
             is Response.Error -> {
@@ -104,7 +114,6 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel) {
             }
 
         }
-
     }
 
 

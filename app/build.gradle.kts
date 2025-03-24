@@ -120,4 +120,11 @@ dependencies {
     implementation("com.google.maps.android:places-compose:0.1.3")
 
 
+    // more icons
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+
+    implementation("com.google.accompanist:accompanist-drawablepainter:0.35.0-alpha")
+
+    implementation ("com.github.bumptech.glide:compose:1.0.0-beta01")
+
 }
