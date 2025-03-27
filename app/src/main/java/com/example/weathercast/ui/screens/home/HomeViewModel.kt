@@ -94,7 +94,6 @@ class HomeScreenViewModel(private val repo: Repository) : ViewModel() {
 }
 
 
-
 class HomeScreenViewModelFactory(private val repo: Repository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return HomeScreenViewModel(repo) as T

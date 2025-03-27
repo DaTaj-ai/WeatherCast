@@ -1,6 +1,7 @@
 package com.example.weathercast
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -52,6 +53,7 @@ import com.example.weathercast.navigation.NavSetup
 import com.example.weathercast.navigation.ScreenRoute
 import com.example.weathercast.ui.theme.WeatherCastTheme
 import com.example.weathercast.utlis.Constants
+import com.example.weathercast.utlis.applyLanguage
 import com.exyte.animatednavbar.AnimatedNavigationBar
 import com.exyte.animatednavbar.animation.balltrajectory.Parabolic
 import com.exyte.animatednavbar.animation.balltrajectory.Straight
@@ -90,6 +92,9 @@ class MainActivity : ComponentActivity() {
                 navController
             )
         }
+
+        // Call the applyLanguage function
+        applyLanguage(getSharedPreferences(Constants.SETTINGS, Context.MODE_PRIVATE), resources)
     }
 
     override fun onStart() {
@@ -135,9 +140,18 @@ class MainActivity : ComponentActivity() {
                         "Location",
                         "yes we are here :  ${location.latitude}  ${location.longitude}"
                     )
+
+
                     var sp = getSharedPreferences(Constants.SETTINGS, MODE_PRIVATE)
-                    sp.edit().putString(Constants.USER_LAT, location.latitude.toString()).commit()
-                    sp.edit().putString(Constants.USER_LONG, location.longitude.toString()).commit()
+                    if(sp.getString(Constants.LOCATION_TYPE , Constants.GPS_TYPE) ==Constants.GPS_TYPE ){
+
+                        sp.edit().putString(Constants.USER_LAT, location.latitude.toString())
+                            .commit()
+                        sp.edit().putString(Constants.USER_LONG, location.longitude.toString()).commit()
+                    }
+
+
+                    // flag map lat and map long
 
                 }
             }

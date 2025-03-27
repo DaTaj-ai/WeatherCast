@@ -5,7 +5,7 @@ class Constants {
         val SETTINGS = "Settings"
         val LANGUAGE = "Language"
         val TEMPERATURE_UNIT = "Temperature Unit"
-        val LOCATION = "Location"
+        val LOCATION_TYPE = "Location"
         val WIND_SPEED_UNIT = "Wind Speed Unit"
         val ARABIC_PARM = "ar"
         val Emglish_PARM = "en"
@@ -14,6 +14,11 @@ class Constants {
         val KELVIN_PARM = ""
         val USER_LONG = "USER_LOCAL_LONGITUDE"
         val USER_LAT = "USER_LOCAL_LATITUDE"
+        val MAP_FAVORITES_TYPE = "MAP_FAVORITE"
+        val MAP_PICK_TYPE = "MAP_SEARCH"
+
+        val GPS_TYPE = "GPS"
+        val MAP_TYPE = "MAP"
     }
 }
 

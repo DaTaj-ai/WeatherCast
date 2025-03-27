@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">WeatherCast</string>
+    <string name="loading">Loading</string>
+    <string name="wind_speed">Wind speed</string>
+    <string name="pressure">Pressure</string>
+    <string name="clouds">Clouds</string>
+    <string name="humidity">Humidity</string>
+    <string name="weekly_forecast">Weekly Forecast</string>
+    <string name="today_forecast">Hourly Forecast</string>
 </resources>

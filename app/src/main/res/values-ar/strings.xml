@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">الطقس</string>
+    <string name="loading">جار التحميل</string>
+    <string name="wind_speed">سرعة الرياح</string>
+    <string name="pressure">ضغطال</string>
+    <string name="clouds">السحاب</string>
+    <string name="humidity">Humidity</string>
+    <string name="weekly_forecast">حالة الطقس الاسبوعي</string>
+    <string name="today_forecast">طقس اليوم حالة ال</string>
+</resources>

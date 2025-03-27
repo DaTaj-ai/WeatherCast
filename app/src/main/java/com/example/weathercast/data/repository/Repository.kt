@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.mvvm_lab3.data.localDataSource.LocalDataSource
 import com.example.mvvm_lab3.data.reomteDataSource.RemoteDataSource
 import com.example.weathercast.data.models.ForecastModel
+import com.example.weathercast.data.models.Location
 import com.example.weathercast.data.models.WeatherModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -28,8 +29,25 @@ class Repository private constructor(
 
     fun getForecast(lat: Double, lon: Double, lang: String , unit: String): Flow<ForecastModel?> {
         return flow {
-            emit(remoteDataSource.getForecast(lat, lon ,lang , unit )?.body())
+            emit(remoteDataSource.getForecast(lat = lat,lon= lon ,lang=lang , unit =  unit )?.body())
         }
     }
+
+
+    //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    // Local part and Location
+    //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+    suspend fun insertLocation(location: Location): Long {
+        return localDataSource.insertLocation(location)
+    }
+
+    suspend fun deleteLocation(location: Location): Int {
+        return localDataSource.deleteLocation(location)
+    }
+    suspend fun getAllLocations(): Flow<List<Location>> {
+        return localDataSource.getAllLocations()
+    }
+
 
 }

@@ -89,29 +89,29 @@ private fun LocationInfo(
     }
 }
 
-@Composable
-private fun ProgressBar(
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .background(
-                brush = Brush.linearGradient(
-                    0f to ColorGradient1,
-                    0.25f to ColorGradient2,
-                    1f to ColorGradient3
-                ),
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(
-                vertical = 2.dp,
-                horizontal = 10.dp
-            )
-    ) {
-        Text(
-            text = "Updating •",
-            style = MaterialTheme.typography.labelSmall,
-            color = ColorTextSecondary.copy(alpha = 0.7f)
-        )
-    }
-}
+//@Composable
+//private fun ProgressBar(
+//    modifier: Modifier = Modifier
+//) {
+//    Box(
+//        modifier = modifier
+//            .background(
+//                brush = Brush.linearGradient(
+//                    0f to ColorGradient1,
+//                    0.25f to ColorGradient2,
+//                    1f to ColorGradient3
+//                ),
+//                shape = RoundedCornerShape(8.dp)
+//            )
+//            .padding(
+//                vertical = 2.dp,
+//                horizontal = 10.dp
+//            )
+//    ) {
+//        Text(
+//            text = "Updating •",
+//            style = MaterialTheme.typography.labelSmall,
+//            color = ColorTextSecondary.copy(alpha = 0.7f)
+//        )
+//    }
+//}
