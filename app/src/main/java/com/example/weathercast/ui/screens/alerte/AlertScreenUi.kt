@@ -81,7 +81,6 @@ fun AlertScreenMain() {
 
 @SuppressLint("ScheduleExactAlarm")
 private fun setAlarm(context: Context, time : Long  ) {
-    //val timeSec = System.currentTimeMillis() + 10000
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, MyAlarm::class.java)
 
@@ -94,7 +93,6 @@ private fun setAlarm(context: Context, time : Long  ) {
         else
             PendingIntent.FLAG_UPDATE_CURRENT
     )
-
     alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)
 }
 
@@ -184,84 +182,7 @@ fun DateAndTimePickerExample(onDismiss: () -> Unit, context: Context) {
 }
 
 
-//@RequiresApi(Build.VERSION_CODES.O)
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun DateAndTimePickerExample(onDismiss: () -> Unit) {
-//    var showTimePicker by remember { mutableStateOf(false) }
-//    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
-//    var selectedTime by remember { mutableStateOf(LocalTime.now()) }
-//
-//    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = selectedDate.toEpochDay() * 24 * 60 * 60 * 1000)
-//
-//    val formattedDate = selectedDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"))
-//    val formattedTime = selectedTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(16.dp),
-//        verticalArrangement = Arrangement.Center,
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ) {
-//        Text(text = "Selected Date: $formattedDate", style = MaterialTheme.typography.bodyLarge)
-//        Text(text = "Selected Time: $formattedTime", style = MaterialTheme.typography.bodyLarge)
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        Button(onClick = { showTimePicker = true }) {
-//            Text(text = "Select Date and Time")
-//        }
-//
-//        // TimePicker Dialog
-//        if (showTimePicker) {
-//            val timePickerState = rememberTimePickerState(
-//                initialHour = selectedTime.hour,
-//                initialMinute = selectedTime.minute
-//            )
-//
-//            AlertDialog(
-//                onDismissRequest = { showTimePicker = false },
-//                confirmButton = {
-//                    Button(onClick = {
-//                        selectedTime = LocalTime.of(timePickerState.hour, timePickerState.minute)
-//                        showTimePicker = false
-//                        onDismiss()
-//                    }) {
-//                        Text("OK" )
-//                    }
-//                },
-//                dismissButton = {
-//                    Button(onClick = { showTimePicker = false }) {
-//                        Text("Cancel")
-//                    }
-//                },
-//                title = { Text("Select Time") },
-//                text = { TimePicker(state = timePickerState) }
-//            )
-//        }
-//
-//        // Date Picker Dialog
-//        DatePickerDialog(
-//            onDismissRequest = { onDismiss() },
-//            confirmButton = {
-//                var context = LocalContext.current
-//                Button(onClick = {
-//                    val epochMilli = datePickerState.selectedDateMillis
-//                    if (epochMilli != null) {
-//                        selectedDate = LocalDate.ofEpochDay(epochMilli / (24 * 60 * 60 * 1000))
-//                    }
-//                    showTimePicker = true // Show time picker after selecting date
-//                }) {
-//                    Text("Next")
-//                }
-//            }
-//        ) {
-//            DatePicker(state = datePickerState)
-//        }
-//    }
-//}
-//
+
 @RequiresApi(Build.VERSION_CODES.O)
 fun convertToMillis(date: LocalDate, time: LocalTime): Long {
     val zoneId = java.time.ZoneId.systemDefault()

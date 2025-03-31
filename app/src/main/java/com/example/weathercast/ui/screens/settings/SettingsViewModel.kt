@@ -3,13 +3,35 @@ package com.example.weathercast.ui.screens.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.weathercast.data.repository.Repository
+import com.example.weathercast.utlis.Constants
 
 
-class SettingsViewModel(repo : Repository) : ViewModel(){
+class SettingsViewModel(var repo : Repository) : ViewModel(){
 
-    init {
-
+    fun getLanguage(): String? {
+        return repo.getLanguage()
     }
+
+    fun getTemperatureUnit(): String? {
+        return repo.getTemperatureUnit()
+    }
+
+    fun getLocationType(): String? {
+        return repo.getLocationType()
+    }
+    fun setLocationType(type: String) {
+        repo.setLocationType(type)
+    }
+    fun setLanguage(language: String) {
+        repo.setLanguage(language)
+    }
+    fun setTemperatureUnit(unit: String) {
+        repo.setTemperatureUnit(unit)
+    }
+    fun setWindSpeed(unit :String){
+        repo.setWindSpeed(unit)
+    }
+
 
 }
 

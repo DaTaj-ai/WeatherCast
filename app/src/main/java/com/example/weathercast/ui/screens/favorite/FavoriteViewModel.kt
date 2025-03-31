@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.weathercast.data.models.Location
+import com.example.weathercast.data.models.WeatherModel
 import com.example.weathercast.data.repository.Repository
+import com.example.weathercast.utlis.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,25 +19,56 @@ class FavoriteViewModel(private val repository: Repository) : ViewModel() {
     val locations = _mutableStateLocationList.asStateFlow()
 
 
-    fun insertLocation(location: Location) {
+    val _mutableStateWeatherList = MutableStateFlow<List<WeatherModel>>(emptyList())
+    val weatherList = _mutableStateWeatherList.asStateFlow()
+
+
+    private fun insertWeather(weather: WeatherModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insertLocation(location)
+            repository.insertFavoriteWeather(weather)
         }
     }
 
-    fun deleteLocation(location: Location) {
+    fun deleteWeather(weather: WeatherModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteLocation(location)
+            repository.deleteFavoriteWeather(weather)
         }
     }
 
-    fun getLocations() {
+    fun getAllFavoriteLocation(){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getAllLocations().collect {
-                _mutableStateLocationList.emit(it)
+            repository.getAllFavoriteWeather().collect {
+                _mutableStateWeatherList.emit(it)
             }
         }
     }
+
+    // Remote part
+    fun insertWeatherByLatLong(lat: Double, lon: Double) {
+        viewModelScope.launch(Dispatchers.IO) {
+            var lang = repository.getLanguage()
+            var unit = repository.getTemperatureUnit()
+
+            repository.getWeather(lat = lat, lon = lon , lang = lang?:"en" , unit = unit?: Constants.CELSIUS_PARM).collect {
+                //flag
+                insertWeather(it!!)
+            }
+        }
+    }
+
+    fun setGlobleLatLong(lat: Double, lon: Double) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.setGlobleLatLong(lat.toString(), lon.toString())
+        }
+    }
+
+//    fun getWeatherByLatLong(lat: Double, lon: Double) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            repository.getLocalWeatherByLatLong(lat, lon).collect {
+//
+//            }
+//        }
+//    }
 
 }
 

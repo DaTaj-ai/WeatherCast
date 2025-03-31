@@ -2,6 +2,9 @@ package com.example.weathercast.utlis
 
 class Constants {
     companion object {
+        val FORECAST_DATA: String = "FORECAST_DATA"
+        val CURRENT_WEATHER_PRAM: String = "CURRENT_WEATHER_ID"
+        val CURRENT_WEATHER_ID: Int = 1
         val SETTINGS = "Settings"
         val LANGUAGE = "Language"
         val TEMPERATURE_UNIT = "Temperature Unit"
@@ -16,7 +19,6 @@ class Constants {
         val USER_LAT = "USER_LOCAL_LATITUDE"
         val MAP_FAVORITES_TYPE = "MAP_FAVORITE"
         val MAP_PICK_TYPE = "MAP_SEARCH"
-
         val GPS_TYPE = "GPS"
         val MAP_TYPE = "MAP"
     }

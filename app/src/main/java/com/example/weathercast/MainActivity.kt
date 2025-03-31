@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color.parseColor
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
@@ -33,7 +34,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -55,9 +55,7 @@ import com.example.weathercast.ui.theme.WeatherCastTheme
 import com.example.weathercast.utlis.Constants
 import com.example.weathercast.utlis.applyLanguage
 import com.exyte.animatednavbar.AnimatedNavigationBar
-import com.exyte.animatednavbar.animation.balltrajectory.Parabolic
 import com.exyte.animatednavbar.animation.balltrajectory.Straight
-import com.exyte.animatednavbar.animation.balltrajectory.Teleport
 import com.exyte.animatednavbar.animation.indendshape.Height
 import com.exyte.animatednavbar.animation.indendshape.shapeCornerRadius
 import com.exyte.animatednavbar.utils.noRippleClickable
@@ -141,13 +139,17 @@ class MainActivity : ComponentActivity() {
                         "yes we are here :  ${location.latitude}  ${location.longitude}"
                     )
 
-
                     var sp = getSharedPreferences(Constants.SETTINGS, MODE_PRIVATE)
-                    if(sp.getString(Constants.LOCATION_TYPE , Constants.GPS_TYPE) ==Constants.GPS_TYPE ){
+                    if (sp.getString(
+                            Constants.LOCATION_TYPE,
+                            Constants.GPS_TYPE
+                        ) == Constants.GPS_TYPE
+                    ) {
 
                         sp.edit().putString(Constants.USER_LAT, location.latitude.toString())
                             .commit()
-                        sp.edit().putString(Constants.USER_LONG, location.longitude.toString()).commit()
+                        sp.edit().putString(Constants.USER_LONG, location.longitude.toString())
+                            .commit()
                     }
 
 
@@ -203,8 +205,8 @@ fun BottomNavigationBar(
         cornerRadius = shapeCornerRadius(cornerRadius = 16.dp),
         ballAnimation = Straight(tween(250)),
         indentAnimation = Height(tween(1)),
-        barColor = MaterialTheme.colorScheme.background,
-        ballColor = MaterialTheme.colorScheme.primary,
+        barColor = Color(parseColor("#090b35")),
+        ballColor = Color.Black,
 
         ) {
         navigationBarItems.forEach { item ->
@@ -225,8 +227,8 @@ fun BottomNavigationBar(
                     imageVector = item.icon,
                     contentDescription = "Bottom bar icon",
                     tint = if (selectedIndex == item.ordinal) {
-                        MaterialTheme.colorScheme.primary
-                    } else MaterialTheme.colorScheme.onBackground
+                        Color.White
+                    } else Color.White.copy(alpha = 0.5f)
                 )
             }
         }

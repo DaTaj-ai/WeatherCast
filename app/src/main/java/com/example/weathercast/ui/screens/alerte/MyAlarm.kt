@@ -56,29 +56,3 @@ private fun showNotification(context: Context, title: String, desc: String) {
 
 
 
-//class MyAlarm: BroadcastReceiver() {
-//    override fun onReceive(context: Context, intent: Intent) {
-//        try {
-//            showNotification(context, "Weather Cast Notification ", "Compose Notification")
-//        } catch (ex: Exception) {
-//            Log.d("Receive Ex", "onReceive: ${ex.printStackTrace()}")
-//        }
-//    }
-//}
-//
-//private fun showNotification(context: Context, title: String, desc: String) {
-//    val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//    val channelId = "message_channel"
-//    val channelName = "message_name"
-//
-//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//        val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
-//        manager.createNotificationChannel(channel)
-//    }
-//
-//    val builder = NotificationCompat.Builder(context, channelId)
-//        .setContentTitle(title)
-//        .setContentText(desc)
-//        .setSmallIcon(R.drawable.cloud_day_forecast_rain_rainy_icon)
-//    manager.notify(1, builder.build())
-//}

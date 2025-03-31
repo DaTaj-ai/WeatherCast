@@ -1,9 +1,11 @@
 package com.example.weathercast.data.models
 
-import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.weathercast.ui.screens.home.components.ForecastItem
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -11,17 +13,66 @@ import java.util.Locale
 
 
 @Entity(tableName = "forecast")
-
 data class ForecastModel(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    @PrimaryKey
+    var id: Int ,
+    @TypeConverters(ForecastConverters::class)
     var city: City,
     var cnt: Int,
     var cod: String,
     @SerializedName("list")
+    @TypeConverters(ForecastConverters::class)
     var forecastEntry: List<ForecastEntry>,
     var message: Int
 )
+
+// Convert a single ForecastEntry to JSON String
+fun ForecastEntry.toJson(): String {
+    return Gson().toJson(this)
+}
+
+// Convert JSON back to ForecastEntry
+fun String.toForecastEntry(): ForecastEntry {
+    return Gson().fromJson(this, ForecastEntry::class.java)
+}
+
+// For a List<ForecastEntry> (if needed)
+fun List<ForecastEntry>.toJsonList(): String {
+    return Gson().toJson(this)
+}
+
+fun String.toForecastEntryList(): List<ForecastEntry> {
+    val type = object : TypeToken<List<ForecastEntry>>() {}.type
+    return Gson().fromJson(this, type)
+}
+
+class ForecastConverters {
+    private val gson = Gson()
+
+    // City converter
+    @TypeConverter
+    fun cityToString(city: City): String = gson.toJson(city)
+
+    @TypeConverter
+    fun stringToCity(json: String): City = gson.fromJson(json, City::class.java)
+
+    // List<ForecastEntry> converter
+    @TypeConverter
+    fun forecastEntriesToString(list: List<ForecastEntry>): String = gson.toJson(list)
+
+    @TypeConverter
+    fun stringToForecastEntries(json: String): List<ForecastEntry> {
+        val type = object : TypeToken<List<ForecastEntry>>() {}.type
+        return gson.fromJson(json, type)
+    }
+
+    // For other nested objects if needed
+    @TypeConverter
+    fun mainToString(main: Main): String = gson.toJson(main)
+
+    @TypeConverter
+    fun stringToMain(json: String): Main = gson.fromJson(json, Main::class.java)
+}
 
 
 //fun ForecastModel.getTodayForecast(): List<DailyForecast> {
@@ -73,16 +124,6 @@ fun ForecastModel.dailyForecasts(): List<ForecastItem> {
         val dayOfWeekFormat = SimpleDateFormat("E", Locale.getDefault())
         val dayOfWeek = dayOfWeekFormat.format(date)
 
-
-//            // Create a ForecastItem for this forecast
-//            val forecastItem = ForecastItem(
-//                /*item.weather[0].icon.toInt(),*/ // icon (ensure it is an integer)
-//                dayMonth, // date-time string
-//                item.main.temp.toString(), // temperature
-//                item.main.humidity.toString(), // humidity
-//                item.wind.speed.toString(), // wind speed
-//                item.clouds.all.toString() // cloudiness
-//            )
         val forecastItem = ForecastItem(
             dayOfWeek = dayOfWeek,
             date = dayMonth,

@@ -1,17 +1,22 @@
 package com.example.weathercast.ui.screens.home
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -22,10 +27,12 @@ import com.example.weathercast.data.models.ForecastModel
 import com.example.weathercast.data.models.WeatherModel
 import com.example.weathercast.data.models.dailyForecasts
 import com.example.weathercast.data.models.getTodayForecast
-import com.example.weathercast.ui.screens.V2home.RealHomeScreen
-import com.example.weathercast.ui.screens.V2home.WeeklyForecastCard
-import com.example.weathercast.ui.screens.home.components.toJsonObject
+import com.example.weathercast.data.models.toJsonObject
+import com.example.weathercast.ui.screens.home.components.RealHomeScreen
+import com.example.weathercast.ui.screens.home.components.TodayForecast
+import com.example.weathercast.ui.screens.home.components.WeeklyForecastCard
 import com.example.weathercast.utlis.Constants
+import com.example.weathercast.utlis.NetworkState
 import com.example.weathercast.utlis.Response
 
 
@@ -34,38 +41,64 @@ import com.example.weathercast.utlis.Response
 @Composable
 fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, navController: NavHostController) {
     var context = LocalContext.current.applicationContext
+    //val network by homeScreenViewModel.netWorkManger.collectAsStateWithLifecycle()
+
+    homeScreenViewModel.observeNetworkChanges(context)
+
+    LaunchedEffect(Unit) {
+        val networkState = NetworkState(context)
+        val isOnline = networkState.isNetworkAvailable()
+        homeScreenViewModel.getWeatherDataCall(
+            isOnline
+        )
+    }
 
     val weather by homeScreenViewModel.weatherModel.collectAsStateWithLifecycle()
     val forecast by homeScreenViewModel.forecastModel.collectAsStateWithLifecycle()
+    var showDialog by remember { mutableStateOf(false) }
 
 
     LaunchedEffect(Unit) {
-        try {
-            val sp = context.getSharedPreferences(Constants.SETTINGS, Context.MODE_PRIVATE)
-            val language = sp.getString(Constants.LANGUAGE, Constants.Emglish_PARM)
-            val location = sp.getString(Constants.LOCATION_TYPE, "GPS")
-            val windSpeedUnit = sp.getString(Constants.WIND_SPEED_UNIT, "m/s")
-            val tempUnit = sp.getString(Constants.TEMPERATURE_UNIT, Constants.CELSIUS_PARM)
-            val lat = sp.getString(Constants.USER_LAT, "0.0")?.toDouble()?:2.54
-            val long = sp.getString(Constants.USER_LONG, "0.0")?.toDouble()?:2.54
+        homeScreenViewModel.networkEvents.collect { event ->
+            Log.i("offline", "HomeScreen: ${event} ")
+            when (event) {
+                NetworkEvent.Connected -> {
+                    Toast.makeText(context, "Back online", Toast.LENGTH_SHORT).show()
 
-            Log.i("SP", "Shared prefrance what : ${language}  ")
-            Log.i("SP", "Shared prefrance what : ${location}  ")
-            Log.i("SP", "Shared prefrance what : ${windSpeedUnit}  ")
-            Log.i("SP", "Shared prefrance what tteemmp  : ${tempUnit} ")
+                    val language = homeScreenViewModel.getLanguage()
+                    val windSpeedUnit = homeScreenViewModel.getWindSpeed()
+                    val tempUnit = homeScreenViewModel.getTemperatureUnit()
+                    val latLong = homeScreenViewModel.getGlobleLatLong()
 
-            homeScreenViewModel.getWeather(lat, long,language?:Constants.Emglish_PARM, tempUnit?:Constants.CELSIUS_PARM)
-            homeScreenViewModel.getForecast(lat, long,  language?:Constants.Emglish_PARM, tempUnit?:Constants.CELSIUS_PARM)
-            homeScreenViewModel.getLocationName(context)
+                    homeScreenViewModel.getWeather(
+                        latLong.latitude,
+                        latLong.longitude,
+                        language ?: Constants.Emglish_PARM,
+                        tempUnit ?: Constants.CELSIUS_PARM
+                    )
+                    homeScreenViewModel.getForecastOnline(
+                        latLong.latitude,
+                        latLong.longitude,
+                        language ?: Constants.Emglish_PARM,
+                        tempUnit ?: Constants.CELSIUS_PARM
+                    )
 
-        } catch (e: Exception) {
-            Log.i("TAG", "HomeScreen:+ ${e.message} ")
+                    showDialog = false
+                }
+
+                NetworkEvent.Disconnected -> {
+                    Log.i("TAG", "HomeScreen: here offline")
+//                    homeScreenViewModel.getWeatherOffline()
+                    showDialog = true
+                }
+            }
+
         }
     }
 
+
+
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-
-
         when (weather) {
             is Response.Loading -> {
                 // call Loading Logic
@@ -84,7 +117,6 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, navController: NavHostC
 
         when (forecast) {
             is Response.Loading -> {
-
                 Text(text = stringResource(R.string.loading))
             }
 
@@ -95,10 +127,10 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, navController: NavHostC
 
                 var value = forecastLocal.dailyForecasts()
 
-                WeeklyForecastCard(value, {forecastItem ->
+                WeeklyForecastCard(value, { forecastItem ->
                     navController.navigate("details_screen/${forecastItem.toJsonObject()}")
                 })
-                }
+            }
 
             is Response.Error -> {
                 Text(text = ((forecast as Response.Error).message))
@@ -106,6 +138,20 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, navController: NavHostC
         }
     }
 
+
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("No Internet") },
+            text = { Text("Please check your connection") },
+            confirmButton = {
+                Button(onClick = { showDialog = false }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
 
 }
 

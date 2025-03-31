@@ -1,4 +1,4 @@
-package com.example.weathercast.ui.screens.favorite
+package com.example.weathercast.ui.screens.favorite.components
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
@@ -7,21 +7,23 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,92 +43,124 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.weathercast.R
-import com.example.weathercast.data.models.Location
+import com.example.weathercast.data.models.WeatherModel
+import com.example.weathercast.ui.screens.favorite.FavoriteViewModel
+import com.example.weathercast.utlis.weatherIcons
 
 
 @Composable
-fun FavoriteLocationCardItem(location: Location) {
-    val snackbarHostState = remember { SnackbarHostState() }
+fun FavoriteLocationCardItem(
+    location: WeatherModel,
+    navigateToDetailsScreen: () -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(4.dp)
+            .clickable { navigateToDetailsScreen() }
             .fillMaxWidth()
             .height(130.dp),
-        elevation = cardElevation(defaultElevation = 8.dp),
-        colors = CardDefaults.cardColors(Color(0xff1680f5))
+        elevation = cardElevation(defaultElevation = 4.dp)
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            Color(0xFF3A7BD5),
+                            Color(0xFF00D2FF)
+                        )
+                    )
+                )
         ) {
-            Row {
-                Column() {
-                    Text(
-                        text = location.city, fontSize = 20.sp,
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .align(Alignment.CenterHorizontally)
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Left side content
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        Icons.Default.LocationOn,
+                        contentDescription = "Location",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Column {
+                        Text(
+                            text = location.name,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = location.weather[0].description,
+                            fontSize = 16.sp,
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                    }
+                }
+
+                // Right side content
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(
+                            id = weatherIcons[location.weather[0].icon] ?: R.drawable.day_clear
+                        ),
+                        contentDescription = "Weather icon",
+                        modifier = Modifier.size(50.dp)
+                            .padding(end = 16.dp)
                     )
                     Text(
-                        text = location.country,
-                        fontSize = 20.sp,
-                        modifier = Modifier
-                            .padding(start = 16.dp, top = 2.dp)
+                        text = "${location.main.temp.toInt()}°C",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
                     )
                 }
-                Icon(Icons.Default.LocationOn, contentDescription = "Add Item")
             }
-
-            Image(
-                painter = painterResource(id = R.drawable.cloud_day_forecast_rain_rainy_icon),
-                contentDescription = null,
-                modifier = Modifier
-                    .width(50.dp)
-                    .height(50.dp)
-                    .padding(top = 4.dp)
-                    .align(Alignment.CenterVertically)
-            )
-            Text(
-                text = "25",
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .align(Alignment.CenterVertically), fontSize = 20.sp
-            )
         }
     }
 }
 
 
 @Composable
-fun FavoriteLocationUi(favoriteViewModel: FavoriteViewModel ,  snackbarHostState: SnackbarHostState) {
-    favoriteViewModel.getLocations()
-    val locations by favoriteViewModel.locations.collectAsStateWithLifecycle()
+fun FavoriteLocationUi(
+    favoriteViewModel: FavoriteViewModel,
+    snackbarHostState: SnackbarHostState,
+    navigateToDetails: (WeatherModel) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    favoriteViewModel.getAllFavoriteLocation()
+    val locations by favoriteViewModel.weatherList.collectAsStateWithLifecycle()
     LazyColumn(
-        modifier = Modifier.padding(8.dp)
+        modifier = modifier
     ) {
         items(locations.size) {
             SwipeToDeleteContainer(
                 item = locations[it],
                 onDelete = {
-                    Log.i("TAG", "FavoriteLocationUi: ${it.city} , ${it.country} ")
-                    favoriteViewModel.deleteLocation(it) },
-                snackbarHostState = snackbarHostState
+                    favoriteViewModel.deleteWeather(it)
+                },
+                snackbarHostState = snackbarHostState,
             ) {
-                FavoriteLocationCardItem(it)
+                FavoriteLocationCardItem(it, { navigateToDetails(it) })
             }
         }
     }
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -135,9 +169,9 @@ fun <T> SwipeToDeleteContainer(
     item: T,
     onDelete: (T) -> Unit,
     onRestore: (T) -> Unit = {},
-    animationDuration: Int = 500,
+    animationDuration: Int = 100,
     snackbarHostState: SnackbarHostState,
-    content: @Composable (T) -> Unit
+    content: @Composable (T) -> Unit,
 ) {
     val context = LocalContext.current
     var isRemoved by remember { mutableStateOf(false) }
@@ -161,12 +195,11 @@ fun <T> SwipeToDeleteContainer(
         if (isRemoved) {
             Log.i("TAG", "SwipeToDeleteContainer 1 : ")
             val result = snackbarHostState.showSnackbar(
-                message = "how are you ya saad ",
-                actionLabel = "undo",
+                message = "راجع نفسك يا صاحبي  ?!  ",
+                actionLabel = "متشغلش بالك",
                 duration = SnackbarDuration.Short
             )
             if (result == SnackbarResult.ActionPerformed) {
-                Log.i("TAG", "SwipeToDeleteContainer: yes i am here ??  ")
                 onRestore(item)
                 canSwipe = true
                 isRemoved = false
