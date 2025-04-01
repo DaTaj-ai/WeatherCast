@@ -8,11 +8,21 @@ import java.util.Locale
 
 fun getTodaysForecast(forecast: ForecastModel): List<ForecastEntry> {
     val currentDate = Calendar.getInstance()
-    val currentDateString = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate.time)
-
+    val currentDateString =
+        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate.time)
 
     return forecast.forecastEntry.filter {
         val forecastDateString = it.dt_txt.split(" ")[0] // Extract the date part from `dt_txt`
         forecastDateString == currentDateString
     }.take(8)
+}
+
+fun getTempUnitSymbol(tempUnit: String): String {
+    if (tempUnit == Constants.CELSIUS_PARM) {
+        return "°C"
+    } else if (tempUnit == Constants.FAHRENHEIT_PARM) {
+        return "°F"
+    } else {
+        return "°K"
+    }
 }

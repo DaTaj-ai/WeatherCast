@@ -16,7 +16,7 @@ fun DetailsUi(detailsViewModel: DetailsViewModel, latLong: LatLng) {
 
 
     weather?.let {
-        RealHomeScreen(it)
+        RealHomeScreen(it , "C")
     }
 
 }

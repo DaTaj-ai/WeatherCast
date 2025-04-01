@@ -28,10 +28,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.weathercast.R
 import com.example.weathercast.data.models.DailyForecast
+import com.example.weathercast.utlis.Constants
 import com.example.weathercast.utlis.formatNumberBasedOnLanguage
+import com.example.weathercast.utlis.getTempUnitSymbol
+import com.example.weathercast.utlis.weatherIcons
 
 @Composable
-fun TodayForecast(data: List<DailyForecast>) {
+fun TodayForecast(data: List<DailyForecast> , tempUint:String) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -43,9 +46,7 @@ fun TodayForecast(data: List<DailyForecast>) {
         )
         LazyRow() {
             items(data.size) {
-                HourlyForecastItem(data[it] , {
-                    Log.i("TAG", "TodayForecast: We are Here ")
-                })
+                HourlyForecastItem(data[it] , getTempUnitSymbol(tempUint))
             }
         }
     }
@@ -53,12 +54,12 @@ fun TodayForecast(data: List<DailyForecast>) {
 
 
 @Composable
-private fun HourlyForecastItem(forecastEntry: DailyForecast , onClick: () -> Unit ) {
+private fun HourlyForecastItem(forecastEntry: DailyForecast ,tempUint:String) {
 
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .clickable { onClick() },
+            ,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
@@ -66,13 +67,13 @@ private fun HourlyForecastItem(forecastEntry: DailyForecast , onClick: () -> Uni
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF3A7BD5),  // Dark blue
-                        Color(0xFF00D2FF)   // Light blue
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF3A7BD5),  // Dark blue
+                            Color(0xFF00D2FF)   // Light blue
+                        )
                     )
                 )
-            )
 
         ) {
             Column(
@@ -83,13 +84,16 @@ private fun HourlyForecastItem(forecastEntry: DailyForecast , onClick: () -> Uni
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = formatNumberBasedOnLanguage(forecastEntry.temperature),
+                    text = "${formatNumberBasedOnLanguage(forecastEntry.temperature)}${tempUint} " ,
+
                     color = Color.White,
                     style = MaterialTheme.typography.titleMedium
                 )
 
                 Image(
-                    painter = painterResource(id = R.drawable.cloud_day_forecast_rain_rainy_icon),
+                    painter = painterResource(
+                        weatherIcons.get(forecastEntry.icon) ?: R.drawable.day_clear
+                    ),
                     contentDescription = "Weather icon",
                     modifier = Modifier
                         .width(60.dp)

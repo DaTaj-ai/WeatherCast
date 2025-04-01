@@ -48,11 +48,12 @@ import com.example.weathercast.data.models.WeatherModel
 import com.example.weathercast.utlis.formatNumberBasedOnLanguage
 import com.example.weathercast.utlis.getDate
 import com.example.weathercast.utlis.weatherIcons
+import kotlin.math.roundToInt
 
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun RealHomeScreen(weather: WeatherModel) {
+fun RealHomeScreen(weather: WeatherModel, tempUintSmbol:String) {
     val itemsList = listOf(
         WeatherItem(
             ImageVector.vectorResource(id = R.drawable.humidity_),
@@ -115,10 +116,10 @@ fun RealHomeScreen(weather: WeatherModel) {
                 )
 
                 Text(
-                    text = formatNumberBasedOnLanguage(weather.main.temp.toString()),
+                    text = "${formatNumberBasedOnLanguage(weather.main.temp.roundToInt().toString())}${tempUintSmbol}",
                     letterSpacing = 0.sp,
                     style = TextStyle(
-                        color = Color.White, // Changed to white for better visibility
+                        color = Color.White,
                         fontSize = 80.sp,
                         fontWeight = FontWeight.Black,
                         shadow = Shadow(

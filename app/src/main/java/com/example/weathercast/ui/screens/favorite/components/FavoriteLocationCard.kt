@@ -54,6 +54,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.weathercast.R
 import com.example.weathercast.data.models.WeatherModel
 import com.example.weathercast.ui.screens.favorite.FavoriteViewModel
+import com.example.weathercast.ui.theme.Primary
 import com.example.weathercast.utlis.weatherIcons
 
 
@@ -64,7 +65,7 @@ fun FavoriteLocationCardItem(
 ) {
     Card(
         modifier = Modifier
-            .padding(4.dp)
+            .padding(8.dp)
             .clickable { navigateToDetailsScreen() }
             .fillMaxWidth()
             .height(130.dp),
@@ -95,19 +96,21 @@ fun FavoriteLocationCardItem(
                     Icon(
                         Icons.Default.LocationOn,
                         contentDescription = "Location",
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(24.dp), tint = Primary
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Column {
                         Text(
                             text = location.name,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Primary
                         )
                         Text(
                             text = location.weather[0].description,
                             fontSize = 16.sp,
-                            modifier = Modifier.padding(top = 4.dp)
+                            modifier = Modifier.padding(top = 4.dp),
+                            color = Primary
                         )
                     }
                 }
@@ -128,6 +131,7 @@ fun FavoriteLocationCardItem(
                         text = "${location.main.temp.toInt()}°C",
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold
+                        , color = Primary
                     )
                 }
             }
@@ -145,9 +149,7 @@ fun FavoriteLocationUi(
 ) {
     favoriteViewModel.getAllFavoriteLocation()
     val locations by favoriteViewModel.weatherList.collectAsStateWithLifecycle()
-    LazyColumn(
-        modifier = modifier
-    ) {
+    LazyColumn(modifier = modifier) {
         items(locations.size) {
             SwipeToDeleteContainer(
                 item = locations[it],

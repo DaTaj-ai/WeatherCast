@@ -13,6 +13,7 @@ import com.example.weathercast.data.models.ForecastModel
 import com.example.weathercast.data.models.WeatherModel
 import com.example.weathercast.data.repository.Repository
 import com.example.weathercast.utlis.Constants
+import com.example.weathercast.utlis.NetworkEvent
 import com.example.weathercast.utlis.NetworkMonitor
 import com.example.weathercast.utlis.Response
 import com.google.android.gms.maps.model.LatLng
@@ -218,10 +219,6 @@ class HomeScreenViewModel(private val repo: Repository) : ViewModel() {
 }
 
 
-sealed class NetworkEvent {
-    object Connected : NetworkEvent()
-    object Disconnected : NetworkEvent()
-}
 
 
 class HomeScreenViewModelFactory(private val repo: Repository) : ViewModelProvider.Factory {

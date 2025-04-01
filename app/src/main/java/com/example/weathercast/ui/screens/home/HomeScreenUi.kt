@@ -32,8 +32,11 @@ import com.example.weathercast.ui.screens.home.components.RealHomeScreen
 import com.example.weathercast.ui.screens.home.components.TodayForecast
 import com.example.weathercast.ui.screens.home.components.WeeklyForecastCard
 import com.example.weathercast.utlis.Constants
+import com.example.weathercast.utlis.NetworkEvent
 import com.example.weathercast.utlis.NetworkState
+import com.example.weathercast.utlis.ProgressAnimation
 import com.example.weathercast.utlis.Response
+import com.example.weathercast.utlis.getTempUnitSymbol
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -101,13 +104,18 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, navController: NavHostC
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         when (weather) {
             is Response.Loading -> {
-                // call Loading Logic
-                Text(text = stringResource(id = R.string.loading))
+                ProgressAnimation()
+
             }
 
             is Response.Success -> {
                 var weather = (weather as Response.Success).data as WeatherModel
-                RealHomeScreen(weather)
+                RealHomeScreen(
+                    weather,
+                    getTempUnitSymbol(
+                        homeScreenViewModel.getTemperatureUnit() ?: Constants.CELSIUS_PARM
+                    )
+                )
             }
 
             is Response.Error -> {
@@ -117,19 +125,22 @@ fun HomeScreen(homeScreenViewModel: HomeScreenViewModel, navController: NavHostC
 
         when (forecast) {
             is Response.Loading -> {
-                Text(text = stringResource(R.string.loading))
+            //  ProgressAnimation()
             }
 
             is Response.Success -> {
 
                 val forecastLocal = (forecast as Response.Success).data as ForecastModel
-                TodayForecast(forecastLocal.getTodayForecast())
+                TodayForecast(
+                    forecastLocal.getTodayForecast(),
+                    homeScreenViewModel.getTemperatureUnit() ?: Constants.CELSIUS_PARM
+                )
 
                 var value = forecastLocal.dailyForecasts()
 
                 WeeklyForecastCard(value, { forecastItem ->
                     navController.navigate("details_screen/${forecastItem.toJsonObject()}")
-                })
+                }, homeScreenViewModel.getTemperatureUnit() ?: Constants.CELSIUS_PARM)
             }
 
             is Response.Error -> {

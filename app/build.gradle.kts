@@ -128,4 +128,10 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:compose:1.0.0-beta01")
 
+    // Lottie
+    implementation("com.github.LottieFiles:dotlottie-android:0.4.1")
+
+    implementation("com.airbnb.android:lottie-compose:6.6.4")
+
+
 }

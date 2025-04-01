@@ -14,7 +14,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
@@ -37,10 +36,9 @@ import com.example.weathercast.ui.theme.Primary
 import com.example.weathercast.utlis.Constants
 import com.example.weathercast.utlis.restartActivity
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreenMain(settingsViewModel: SettingsViewModel, navigateToMap: () -> Unit) {
-    var context = LocalContext.current.applicationContext
+    val context = LocalContext.current.applicationContext
 
     val languageMap = mapOf(
         "Language" to Pair(listOf("English", "عربي", "Default")) { selected: String ->
@@ -94,7 +92,7 @@ fun SettingsScreenMain(settingsViewModel: SettingsViewModel, navigateToMap: () -
         }
     )
 
-    // List of all settings maps
+    // List of all settings ma ps
     val list = listOf(languageMap, tempUnitMap, locationMap, windSpeedUnitMap)
 
     Box(
@@ -193,63 +191,4 @@ fun RadioButtonSingleSelection(data: Map.Entry<String, Pair<List<String>, (Strin
 }
 
 
-//@Composable
-//fun RadioButtonSingleSelection(data: Map.Entry<String, Pair<List<String>, (String) -> Int>>) {
-//
-//    val (label, value) = data
-//    val (options, callback) = value
-//
-//    var selectedOption by remember { mutableStateOf(options[0]) }
-//
-//    Card(
-//        modifier = Modifier.padding(16.dp),
-//        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-//    ) {
-//        Column() {
-//            Text(
-//                text = label,
-//                color = Color.Black,
-//                fontSize = 20.sp,
-//                modifier = Modifier.padding(16.dp)
-//            )
-//
-//            Row(modifier = Modifier.fillMaxWidth()) {
-//                options.forEach { text ->
-//                    Column(
-//                        Modifier
-//                            .height(80.dp)
-//                            .align(Alignment.CenterVertically)
-//                            .padding(top = 16.dp)
-//                            .selectable(
-//                                selected = (text == selectedOption),
-//                                onClick = { selectedOption = text
-//                                    callback(text) },
-//                                role = Role.RadioButton )
-//                            .padding(horizontal = 16.dp) ,
-//                        horizontalAlignment = Alignment.CenterHorizontally
-//                    ) {
-////                        RadioButton(
-////                            selected = (text == selectedOption),
-////                            onClick = {
-////                                selectedOption = text
-////                                callback(text)  // Pass the selected value to the callback
-////                            }
-////                        )
-//                        Checkbox(
-//                            checked = (text == selectedOption),
-//                            onCheckedChange = {
-//                                selectedOption = text
-//                                callback(text)  // Pass the selected value to the callback
-//                            }
-//                        )}
-//                        Text(
-//                            text = text,
-//                            style = MaterialTheme.typography.bodyLarge,
-//                            modifier = Modifier.padding(start = 16.dp)
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
 

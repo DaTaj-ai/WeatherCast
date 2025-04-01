@@ -85,6 +85,6 @@ fun FavoritesScreenMain(
         },
         snackbarHost = { SnackbarHost(snackBarHostState) }
     ) { paddingsValue ->
-        FavoriteLocationUi(favoriteViewModel, snackBarHostState, navigateToDetails , modifier = Modifier.padding(paddingsValue))
+        FavoriteLocationUi(favoriteViewModel, snackBarHostState, navigateToDetails , modifier = Modifier.padding(top =  paddingsValue.calculateTopPadding() , bottom = paddingsValue.calculateBottomPadding()+ 80.dp))
     }
 }

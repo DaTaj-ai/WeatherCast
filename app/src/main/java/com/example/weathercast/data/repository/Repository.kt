@@ -3,6 +3,7 @@ package com.example.weathercast.data.repository
 import android.content.SharedPreferences
 import com.example.mvvm_lab3.data.localDataSource.LocalDataSource
 import com.example.mvvm_lab3.data.reomteDataSource.RemoteDataSource
+import com.example.weathercast.data.models.Alarm
 import com.example.weathercast.data.models.ForecastEntry
 import com.example.weathercast.data.models.ForecastModel
 import com.example.weathercast.data.models.Location
@@ -151,5 +152,18 @@ class Repository private constructor(
         return localDataSource.getWeatherById(id)
     }
 
+    //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    // Alarm
+    //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
+    suspend fun insertAlarm(alarm:Alarm):Long{
+        return localDataSource.insertAlarm(alarm)
+    }
+    suspend fun deleteAlarm(alarm:Alarm):Int{
+        return localDataSource.deleteAlarm(alarm)
+    }
+    fun getAllAlarm():Flow<List<Alarm>> {
+        return localDataSource.getAllAlarm()
+
+    }
 }

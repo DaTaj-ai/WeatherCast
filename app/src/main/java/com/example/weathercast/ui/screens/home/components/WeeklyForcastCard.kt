@@ -28,12 +28,15 @@ import androidx.compose.ui.unit.dp
 import com.example.weathercast.R
 import com.example.weathercast.data.models.ForecastItem
 import com.example.weathercast.utlis.formatNumberBasedOnLanguage
+import com.example.weathercast.utlis.getTempUnitSymbol
+import com.example.weathercast.utlis.weatherIcons
 
 
 @Composable
 fun WeeklyForecastCard(
     weeklyForecastDate: List<ForecastItem>,
-    onClickNavigate: (ForecastItem) -> Unit
+    onClickNavigate: (ForecastItem) -> Unit ,
+    tempUnit:String
 ) {
     Column {
         Text(
@@ -63,7 +66,7 @@ fun WeeklyForecastCard(
             ) {
                 Column {
                     weeklyForecastDate.take(5).forEachIndexed { index, forecastItem ->
-                        WeeklyItem(forecastItem) { onClickNavigate(forecastItem) }
+                        WeeklyItem(forecastItem , { onClickNavigate(forecastItem) } ,tempUnit )
                         if (index != weeklyForecastDate.lastIndex.coerceAtMost(4)) {
                             HorizontalDivider(
                                 thickness = 1.dp,
@@ -80,7 +83,7 @@ fun WeeklyForecastCard(
 
 
 @Composable
-private fun WeeklyItem(data: ForecastItem, onClick: (ForecastItem) -> Unit) {
+private fun WeeklyItem(data: ForecastItem, onClick: (ForecastItem) -> Unit , tempUnit:String) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -95,7 +98,7 @@ private fun WeeklyItem(data: ForecastItem, onClick: (ForecastItem) -> Unit) {
 
         )
         Image(
-            painter = painterResource(id = R.drawable.cloud_day_forecast_rain_rainy_icon),
+            painter = painterResource(id = (weatherIcons.get(data.icon) ?: R.drawable.day_clear)),
             contentDescription = null,
             modifier = Modifier
                 .width(50.dp)
@@ -109,7 +112,7 @@ private fun WeeklyItem(data: ForecastItem, onClick: (ForecastItem) -> Unit) {
             color = Color.White
         )
         Text(
-            text = formatNumberBasedOnLanguage(data.temperature.toString()), modifier = Modifier
+            text = "${formatNumberBasedOnLanguage(data.temperature)}${getTempUnitSymbol(tempUnit)}", modifier = Modifier
                 .padding(end = 16.dp)
                 .align(androidx.compose.ui.Alignment.CenterVertically), color = Color.White
         )

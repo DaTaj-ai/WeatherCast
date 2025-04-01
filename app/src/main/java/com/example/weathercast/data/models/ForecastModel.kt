@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.math.roundToInt
 
 
 @Entity(tableName = "forecast")
@@ -96,13 +97,13 @@ fun ForecastModel.getTodayForecast(): List<DailyForecast> {
 
     for (i in 1..8) {
         val dateTimeString = forecastEntry[i].dt_txt
-        val date: Date = inputFormat.parse(dateTimeString) // Parse the date string
-        val formattedTime = outputFormat.format(date) // Format the time as "12:00 PM" or "3:00 PM"
+        val date: Date = inputFormat.parse(dateTimeString)
+        val formattedTime = outputFormat.format(date)
 
         val dailyForecast = DailyForecast(
-            date = formattedTime, // Use the formatted time
-            temperature = forecastEntry[i].main.temp.toString(),
-            icon = ""
+            date = formattedTime,
+            temperature = forecastEntry[i].main.temp.roundToInt() .toString(),
+            icon =  forecastEntry[i].weather[0].icon
         )
         mylist.add(dailyForecast)
     }
@@ -127,7 +128,7 @@ fun ForecastModel.dailyForecasts(): List<ForecastItem> {
         val forecastItem = ForecastItem(
             dayOfWeek = dayOfWeek,
             date = dayMonth,
-            temperature = item.main.temp.toString(),
+            temperature = item.main.temp.roundToInt().toString(),
             description = item.weather[0].description,
             icon = item.weather[0].icon,
         )
