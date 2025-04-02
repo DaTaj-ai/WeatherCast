@@ -9,12 +9,21 @@ class Constants {
         val LANGUAGE = "Language"
         val TEMPERATURE_UNIT = "Temperature Unit"
         val LOCATION_TYPE = "Location"
+        //$$$$$$$$$$$$$$$$$$$$$
+        // wind speed
         val WIND_SPEED_UNIT = "Wind Speed Unit"
+        val WIND_MITER_SEC = "metric"
+        val WIND_MILE_Hour = "imperial"
+        //$$$$$$$$$$$$$$$$$$$$$
+        // language
         val ARABIC_PARM = "ar"
         val Emglish_PARM = "en"
+        //$$$$$$$$$$$$$$$$$$$$$
+        // temperature unit
         val FAHRENHEIT_PARM = "imperial"
         val CELSIUS_PARM = "metric"
-        val KELVIN_PARM = ""
+        val KELVIN_PARM = "standard"
+        //$$$$$$$$$$$$$$$$$$$$$
         val USER_LONG = "USER_LOCAL_LONGITUDE"
         val USER_LAT = "USER_LOCAL_LATITUDE"
         val MAP_FAVORITES_TYPE = "MAP_FAVORITE"

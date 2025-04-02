@@ -31,6 +31,8 @@ import com.example.weathercast.data.models.getFormattedDate
 import com.example.weathercast.data.models.getFormattedTime
 import com.example.weathercast.ui.screens.alerte.AlarmViewModel
 import com.example.weathercast.ui.screens.favorite.components.SwipeToDeleteContainer
+import com.example.weathercast.ui.theme.MyDarkBlue
+import com.example.weathercast.ui.theme.MyLightBlue
 import com.example.weathercast.ui.theme.Primary
 
 
@@ -50,8 +52,8 @@ private fun AlarmCardItem(alarm: Alarm)
                 .background(
                     brush = Brush.horizontalGradient(
                         colors = listOf(
-                            Color(0xFF3A7BD5),
-                            Color(0xFF00D2FF)
+                            MyDarkBlue,
+                            MyLightBlue
                         )
                     )
                 )

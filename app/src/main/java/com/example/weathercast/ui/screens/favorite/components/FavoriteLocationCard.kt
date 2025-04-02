@@ -54,6 +54,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.weathercast.R
 import com.example.weathercast.data.models.WeatherModel
 import com.example.weathercast.ui.screens.favorite.FavoriteViewModel
+import com.example.weathercast.ui.theme.MyLightBlue
 import com.example.weathercast.ui.theme.Primary
 import com.example.weathercast.utlis.weatherIcons
 
@@ -77,7 +78,7 @@ fun FavoriteLocationCardItem(
                     brush = Brush.horizontalGradient(
                         colors = listOf(
                             Color(0xFF3A7BD5),
-                            Color(0xFF00D2FF)
+                            MyLightBlue
                         )
                     )
                 )

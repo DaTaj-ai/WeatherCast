@@ -27,6 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.weathercast.R
 import com.example.weathercast.data.models.ForecastItem
+import com.example.weathercast.ui.theme.MyDarkBlue
+import com.example.weathercast.ui.theme.MyLightBlue
 import com.example.weathercast.utlis.formatNumberBasedOnLanguage
 import com.example.weathercast.utlis.getTempUnitSymbol
 import com.example.weathercast.utlis.weatherIcons
@@ -58,8 +60,8 @@ fun WeeklyForecastCard(
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color(0xFF3A7BD5),  // Dark blue
-                                Color(0xFF00D2FF)   // Light blue
+                                MyDarkBlue,  // Dark blue
+                                MyLightBlue   // Light blue
                             )
                         )
                     )

@@ -89,12 +89,6 @@ class HomeScreenViewModel(private val repo: Repository) : ViewModel() {
     private var forecastModelMutableLiveData = MutableStateFlow<Response>(Response.Loading)
     var forecastModel = forecastModelMutableLiveData.asStateFlow()
 
-    private var locationNameStateMutable = MutableStateFlow<Response>(Response.Loading)
-    var locationNameState = forecastModelMutableLiveData.asStateFlow()
-
-    var netWorkManger = MutableStateFlow<Boolean>(false)
-
-
     fun getWeather(lat: Double, lon: Double, lang: String, unit: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -110,7 +104,6 @@ class HomeScreenViewModel(private val repo: Repository) : ViewModel() {
                 weatherModelMutableStateFlow.emit(Response.Error(ex.message.toString()))
             }
         }
-
     }
 
     private fun getForecastLocal() {
@@ -169,7 +162,27 @@ class HomeScreenViewModel(private val repo: Repository) : ViewModel() {
         }
     }
 
-    //    {"lat":31.2396,"lon":29.9702}
+    fun getLanguage(): String? {
+        return repo.getLanguage()
+    }
+
+    fun getTemperatureUnit(): String? {
+        return repo.getTemperatureUnit()
+    }
+
+    fun getLocationType(): String? {
+        return repo.getLocationType()
+    }
+
+    fun getWindSpeed(): String? {
+        return repo.getWindSpeed()
+    }
+
+    fun getGlobleLatLong(): LatLng {
+        return repo.getGlobleLatLong()
+    }
+
+
     fun upsertWeather(weatherModel: WeatherModel) {
         viewModelScope.launch(Dispatchers.IO) {
             repo.insertFavoriteWeather(weatherModel)
@@ -193,28 +206,10 @@ class HomeScreenViewModel(private val repo: Repository) : ViewModel() {
             "Unknown"
         }
     }
+    private var locationNameStateMutable = MutableStateFlow<Response>(Response.Loading)
+    var locationNameState = forecastModelMutableLiveData.asStateFlow()
 
-
-    fun getLanguage(): String? {
-        return repo.getLanguage()
-    }
-
-    fun getTemperatureUnit(): String? {
-        return repo.getTemperatureUnit()
-    }
-
-    fun getLocationType(): String? {
-        return repo.getLocationType()
-    }
-
-    fun getWindSpeed(): String? {
-        return repo.getWindSpeed()
-    }
-
-    fun getGlobleLatLong(): LatLng {
-        return repo.getGlobleLatLong()
-    }
-
+    var netWorkManger = MutableStateFlow<Boolean>(false)
 
 }
 

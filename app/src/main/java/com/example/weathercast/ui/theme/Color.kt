@@ -3,6 +3,9 @@ package com.example.weathercast.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val Primary = Color(0xFF090b35)
+val MyDarkBlue = Color(0xFF3A7BD5)
+val MyLightBlue = Color(0xFF00D2FF)
+
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)

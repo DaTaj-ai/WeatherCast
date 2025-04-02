@@ -7,10 +7,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,12 +22,15 @@ import androidx.compose.material.icons.filled.AddAlert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults.elevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -113,7 +119,6 @@ fun AlarmScreenUi(alarmViewModel: AlarmViewModel) {
 
         when (alarmList.value) {
             is Response.Error -> {
-
             }
 
             is Response.Success -> {
@@ -144,25 +149,24 @@ fun AlarmScreenUi(alarmViewModel: AlarmViewModel) {
                 )
         }
 
-
         if (showDatePicker) {
-            DateAndTimePickerExample(
+            DateAndTimePicker(
                 onDismiss = { showDatePicker = false },
                 { it ->
                     alarmViewModel.insertAlarm(it)
                 }, context = context
             )
         }
-
-
     }
 }
 
 
 @SuppressLint("ScheduleExactAlarm")
-private fun setAlarm(context: Context, time: Long) {
+private fun setAlarm(context: Context, time: Long , withSound:Boolean) {
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    val intent = Intent(context, MyAlarm::class.java)
+    val intent = Intent(context, MyAlarm::class.java).apply {
+        putExtra("WITH_SOUND", withSound)
+    }
 
     val pendingIntent = PendingIntent.getBroadcast(
         context,
@@ -179,20 +183,20 @@ private fun setAlarm(context: Context, time: Long) {
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateAndTimePickerExample(
+fun DateAndTimePicker(
     onDismiss: () -> Unit,
     insertAlarm: (Alarm) -> Unit,
     context: Context
 ) {
     var showTimePicker by remember { mutableStateOf(false) }
+    var showConfirmationDialog by remember { mutableStateOf(false) } // New state for confirmation dialog
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     var selectedTime by remember { mutableStateOf(LocalTime.now()) }
+    var triggerTimeMillis by remember { mutableStateOf(0L) } // Store the calculated time
 
-    val datePickerState =
-        rememberDatePickerState(initialSelectedDateMillis = selectedDate.toEpochDay() * 24 * 60 * 60 * 1000)
-
-    val formattedDate = selectedDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"))
-    val formattedTime = selectedTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = selectedDate.toEpochDay() * 24 * 60 * 60 * 1000
+    )
 
     Column(
         modifier = Modifier
@@ -201,16 +205,102 @@ fun DateAndTimePickerExample(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Selected Date: $formattedDate", style = MaterialTheme.typography.bodyLarge)
-        Text(text = "Selected Time: $formattedTime", style = MaterialTheme.typography.bodyLarge)
+        // 1. Confirmation Dialog (shown last)
+        if (showConfirmationDialog) {
+            var selectedOption by remember { mutableStateOf("notification") } // Track selected option
 
-        Spacer(modifier = Modifier.height(16.dp))
+            AlertDialog(
+                containerColor = MaterialTheme.colorScheme.surface,
+                titleContentColor = MaterialTheme.colorScheme.onSurface,
+                textContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                onDismissRequest = { showConfirmationDialog = false },
+                title = { Text("Confirm Reminder") },
+                text = {
+                    Column {
+                        Text(
+                            "Set reminder for ${selectedDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"))} " +
+                                    "at ${selectedTime.format(DateTimeFormatter.ofPattern("hh:mm a"))}?"
+                        )
 
-        Button(onClick = { showTimePicker = true }) {
-            Text(text = "Select Date and Time")
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Notification option
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { selectedOption = "notification" }
+                        ) {
+                            RadioButton(
+                                selected = (selectedOption == "notification"),
+                                onClick = { selectedOption = "notification" },
+                                colors = RadioButtonDefaults.colors(
+                                    selectedColor = Primary,
+                                    unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            )
+                            Text(
+                                text = "Notification Only",
+                                modifier = Modifier.padding(start = 8.dp)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // Alarm option
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { selectedOption = "alarm" }
+                        ) {
+                            RadioButton(
+                                selected = (selectedOption == "alarm"),
+                                onClick = { selectedOption = "alarm" },
+                                colors = RadioButtonDefaults.colors(
+                                    selectedColor = Primary,
+                                    unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            )
+                            Text(
+                                text = "Alarm with Sound",
+                                modifier = Modifier.padding(start = 8.dp)
+                            )
+                        }
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            if (selectedOption == "alarm") {
+                                setAlarm(context, triggerTimeMillis , true)
+                            }
+                            else{
+                                setAlarm(context, triggerTimeMillis , false)
+                            }
+                            insertAlarm(Alarm(
+                                dateTime = triggerTimeMillis
+                            ))
+                            showConfirmationDialog = false
+                            onDismiss()
+                        }
+                    ) {
+                        Text("Confirm")
+                    }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = {
+                            showConfirmationDialog = false
+                        }
+                    ) {
+                        Text("Cancel")
+                    }
+                }
+            )
         }
 
-        // TimePicker Dialog
+        // 2. Time Picker Dialog (shown second)
         if (showTimePicker) {
             val timePickerState = rememberTimePickerState(
                 initialHour = selectedTime.hour,
@@ -218,20 +308,18 @@ fun DateAndTimePickerExample(
             )
 
             AlertDialog(
+                containerColor = MaterialTheme.colorScheme.surface,
+                titleContentColor = MaterialTheme.colorScheme.onSurface,
+                textContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 onDismissRequest = { showTimePicker = false },
                 confirmButton = {
                     Button(onClick = {
-
                         selectedTime = LocalTime.of(timePickerState.hour, timePickerState.minute)
+                        triggerTimeMillis = convertToMillis(selectedDate, selectedTime)
                         showTimePicker = false
-                        val triggerTimeMillis = convertToMillis(selectedDate, selectedTime)
-                        setAlarm(context, triggerTimeMillis)
-
-                        insertAlarm(Alarm(dateTime = triggerTimeMillis))
-                        onDismiss()
-
+                        showConfirmationDialog = true // Show confirmation instead of dismissing
                     }) {
-                        Text("OK")
+                        Text("Next")
                     }
                 },
                 dismissButton = {
@@ -244,16 +332,17 @@ fun DateAndTimePickerExample(
             )
         }
 
-        // Date Picker Dialog
         DatePickerDialog(
-            onDismissRequest = { onDismiss() },
+            colors = DatePickerDefaults.colors(
+                // ... (keep your existing color configuration)
+            ),
+            onDismissRequest = onDismiss,
             confirmButton = {
                 Button(onClick = {
-                    val epochMilli = datePickerState.selectedDateMillis
-                    if (epochMilli != null) {
+                    datePickerState.selectedDateMillis?.let { epochMilli ->
                         selectedDate = LocalDate.ofEpochDay(epochMilli / (24 * 60 * 60 * 1000))
                     }
-                    showTimePicker = true // Show time picker after selecting date
+                    showTimePicker = true // Proceed to time picker
                 }) {
                     Text("Next")
                 }
@@ -263,6 +352,4 @@ fun DateAndTimePickerExample(
         }
     }
 }
-
-
 
