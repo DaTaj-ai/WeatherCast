@@ -7,4 +7,8 @@
     <string name="humidity">Humidity</string>
     <string name="weekly_forecast">Weekly Forecast</string>
     <string name="today_forecast">Hourly Forecast</string>
+    <string name="alarms">Alarm</string>
+    <string name="alarms">Alarm</string>
+    <string name="alarmTitle">Alarm</string>
+    <string name="alarmTitle">Alarm</string>
 </resources>

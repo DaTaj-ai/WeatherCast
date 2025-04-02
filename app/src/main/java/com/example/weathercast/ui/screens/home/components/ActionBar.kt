@@ -23,7 +23,7 @@ fun Header(
     modifier: Modifier = Modifier, location: String , dateString: String = "Today"
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(top=20.dp),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

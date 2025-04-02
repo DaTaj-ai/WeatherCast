@@ -12,7 +12,9 @@ import junit.framework.TestCase.assertNotNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -87,4 +89,52 @@ class HomeScreenViewModelTest {
         assertThat(result?.coord?.lat, `is`(weather.coord.lat))
         assertThat(result?.coord?.lon, `is`(weather.coord.lon))
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun InsertWeather_andGetAll() = runTest {
+        val weather = WeatherModel(
+            "dk",
+            Clouds(454),
+            55,
+            Coord(12.12, 12.12),
+            1235,
+            1,
+            Main(12.2, 52, 5, 5, 5, 5.5, 4.5, 78.5),
+            "54",
+            Sys("fdg", 5, 878, 545, 5),
+            4545,
+            454,
+            emptyList(),
+            Wind(12, 212.2, 54.2)
+        )
+        val weather2 = WeatherModel(
+            "dk",
+            Clouds(454),
+            55,
+            Coord(12.12, 12.12),
+            1235,
+            1,
+            Main(12.2, 52, 5, 5, 5, 5.5, 4.5, 78.5),
+            "54",
+            Sys("fdg", 5, 878, 545, 5),
+            4545,
+            454,
+            emptyList(),
+            Wind(12, 212.2, 54.2)
+        )
+
+        // Insert weather data
+        repo.insertFavoriteWeather(weather)
+        repo.insertFavoriteWeather(weather2)
+        val result1 = repo.getAllFavoriteWeather().collect{
+            Log.i("TAG", "InsertWeather_andGetAll: ${it.size}")
+        assertThat(it.size, equalTo( 2))
+        }
+
+        // Check that two new entries were added
+    }
+
+
+
 }

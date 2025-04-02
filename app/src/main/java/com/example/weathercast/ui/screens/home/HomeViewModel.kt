@@ -42,10 +42,6 @@ class HomeScreenViewModel(private val repo: Repository) : ViewModel() {
 
         if (isOnline) {
 
-            Log.i("SP", "Shared prefrance what : ${language}  ")
-            Log.i("SP", "Shared prefrance what : ${windSpeedUnit}  ")
-            Log.i("SP", "Shared prefrance what tteemmp  : ${tempUnit} ")
-
             getWeather(
                 latLong.latitude,
                 latLong.longitude,

@@ -151,10 +151,10 @@ dependencies {
     testImplementation("io.mockk:mockk-android:1.13.17")
     testImplementation("io.mockk:mockk-agent:1.13.17")
 
-    // JUnit 5
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+//    // JUnit 5
+//    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+//    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
 
     // JUnit 4 (for Android tests)
     testImplementation("junit:junit:4.13.2")

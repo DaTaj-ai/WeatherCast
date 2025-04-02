@@ -17,36 +17,29 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.weathercast.R
-import com.google.android.datatransport.cct.internal.NetworkConnectionInfo
 
 class MyAlarm : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         try {
-            // Extract data from intent
             val withSound = intent.getBooleanExtra("WITH_SOUND", false)
             val alarmTime = intent.getLongExtra("ALARM_TIME", 0L)
 
-            // Create input data for worker
             val inputData = Data.Builder()
                 .putBoolean("WITH_SOUND", withSound)
                 .putLong("ALARM_TIME", alarmTime)
                 .build()
 
-            // Set constraints (e.g., require network)
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
-            // Build work request
             val weatherWork = OneTimeWorkRequestBuilder<WeatherWorker>()
                 .setInputData(inputData)
                 .setConstraints(constraints)
                 .build()
 
-            // Enqueue work
             WorkManager.getInstance(context).enqueue(weatherWork)
 
-            // Immediate notification to acknowledge alarm
             if (withSound) {
                 alarmNotification(context, "Weather Update", "Fetching weather data...")
             } else {
@@ -58,22 +51,8 @@ class MyAlarm : BroadcastReceiver() {
         }
     }
 
-//class MyAlarm : BroadcastReceiver() {
-//    @SuppressLint("SuspiciousIndentation")
-//    override fun onReceive(context: Context, intent: Intent) {
-//        try {
-//            val withSound = intent.getBooleanExtra("WITH_SOUND", false)
-//
-//            if (withSound) {
-//                alarmNotification(context, "Weather Cast Notification", "Alarm Fired!")
-//            } else
-//            showNotification(context, "Weather Cast Notification", "Alarm Fired!")
-//        } catch (ex: Exception) {
-//            Log.d("Receive Ex", "onReceive: ${ex.printStackTrace()}")
-//        }
-//    }
-//}
 }
+
 fun alarmNotification(
     context: Context,
     title: String,

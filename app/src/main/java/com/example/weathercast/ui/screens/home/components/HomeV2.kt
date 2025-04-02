@@ -53,7 +53,7 @@ import kotlin.math.roundToInt
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun RealHomeScreen(weather: WeatherModel, tempUintSmbol:String) {
+fun RealHomeScreen(weather: WeatherModel, tempUintSmbol: String) {
     val itemsList = listOf(
         WeatherItem(
             ImageVector.vectorResource(id = R.drawable.humidity_),
@@ -86,7 +86,6 @@ fun RealHomeScreen(weather: WeatherModel, tempUintSmbol:String) {
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        // This Box will contain both the background and foreground content
         Box(modifier = Modifier.fillMaxSize()) {
             GlideImage(
                 model = R.drawable.rain,
@@ -97,12 +96,15 @@ fun RealHomeScreen(weather: WeatherModel, tempUintSmbol:String) {
                 contentScale = ContentScale.Crop
             )
 
-            // 2. Foreground Content
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Header(location = weather.name, dateString = getDate(weather.dt))
+                Header(
+                    modifier = Modifier.padding(top = 16.dp),
+                    location = weather.name,
+                    dateString = getDate(weather.dt)
+                )
 
                 Image(
                     painter = painterResource(
@@ -116,7 +118,11 @@ fun RealHomeScreen(weather: WeatherModel, tempUintSmbol:String) {
                 )
 
                 Text(
-                    text = "${formatNumberBasedOnLanguage(weather.main.temp.roundToInt().toString())}${tempUintSmbol}",
+                    text = "${
+                        formatNumberBasedOnLanguage(
+                            weather.main.temp.roundToInt().toString()
+                        )
+                    }${tempUintSmbol}",
                     letterSpacing = 0.sp,
                     style = TextStyle(
                         color = Color.White,

@@ -37,12 +37,16 @@ class WeatherWorker(
                 repository.getWeather(1.1, 1.1, Constants.Emglish_PARM, Constants.CELSIUS_PARM)
                     .first()
 
-            alarmNotification(applicationContext, "Weather Cast Notification ${weatherResponse?.weather?.get(0)?.description}", "Alarm Fired!")
+            alarmNotification(
+                applicationContext,
+                "Weather Cast Notification ${weatherResponse?.weather?.get(0)?.description}",
+                "Alarm Fired!"
+            )
             Result.success()
 
         } catch (e: Exception) {
             alarmNotification(applicationContext, "Weather Cast Notification", "Alarm Fired!")
-            Result.retry() // Or Result.failure() depending on requirements
+            Result.retry()
         }
     }
 

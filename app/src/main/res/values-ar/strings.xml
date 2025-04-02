@@ -8,4 +8,5 @@
     <string name="humidity">Humidity</string>
     <string name="weekly_forecast">حالة الطقس الاسبوعي</string>
     <string name="today_forecast">طقس اليوم حالة ال</string>
+    <string name="alarmTitle">Alarm</string>
 </resources>
