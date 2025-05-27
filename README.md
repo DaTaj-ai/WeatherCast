@@ -1,15 +1,14 @@
+
+https://github.com/user-attachments/assets/18fff7ab-325e-4a04-9e21-3a72e22ba1d2
 # WeatherCast (Android/Kotlin) MVVM-Jetpack Compose
 
 Developed a real-time weather forecasting application that fetches live data from a weather API, featuring user notifications, alarm scheduling, favorite location selection and saving, multilingual support, customizable settings, and the ability to select or detect the user’s current location.
 
 
 
-Uploading WeatherCastDemo.mp4…
 
 
-
-Uploading WeatherCastDemo.mp4…
-
+https://github.com/user-attachments/assets/5981781d-0e7f-4f44-b580-cae9cfcf1436
 
 
 **Architecture & Technologies:** MVVM, Kotlin, Jetpack Compose, Room, Retrofit, Coroutines, Google APIs
