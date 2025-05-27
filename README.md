@@ -2,6 +2,16 @@
 
 Developed a real-time weather forecasting application that fetches live data from a weather API, featuring user notifications, alarm scheduling, favorite location selection and saving, multilingual support, customizable settings, and the ability to select or detect the user’s current location.
 
+
+
+Uploading WeatherCastDemo.mp4…
+
+
+
+Uploading WeatherCastDemo.mp4…
+
+
+
 **Architecture & Technologies:** MVVM, Kotlin, Jetpack Compose, Room, Retrofit, Coroutines, Google APIs
 
 ## 🌍 Features
